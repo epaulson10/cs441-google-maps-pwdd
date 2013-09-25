@@ -35,7 +35,7 @@ var cs441GoogleMapsViz = cs441GoogleMapsViz || {};
 cs441GoogleMapsViz.formatInfoWindow = function(displayedArea, information)
 {
 			displayedArea.infoWindowHtml ="";
-	        displayedArea.infoWindowHtml += "<p><strong>Zip Code:</strong> " + information + "</p>";
+	        displayedArea.infoWindowHtml += '<p><div id="zipInfo">Zip Code:</div> ' + information + "</p>";
 };
 
     
