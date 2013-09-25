@@ -63,6 +63,11 @@
    #panels{
    	margin-top: 10px;
    }
+   
+   #zip_popup {
+   		font-family: "Comic Sans MS";
+   		font-size: medium;
+   }
      
    .filterPanel {
    	width: 150px;
