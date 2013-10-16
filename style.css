@@ -1,105 +1,71 @@
+html {
+	height: 100%
+}
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	clear: both;
+	font-family: "Bryant", "Gill Sans", sans-serif;
+}
+h1 {
+	text-align: left;
+	font-size: 12pt;
+	text-decoration: none;
+	font-weight: normal;
+	margin-bottom: 0.1em;
+}
+a {
+	color: #7592D3;
+	text-decoration: none;
+}
+p {
+	margin-top: 0.1em;
+	font-size: 10pt;
+}
+svg {
+	background-color: #FFC;
+}
+select {
+	width: 100px;
+}
+.filterPanel {
+	width: 150px;
+	height: 50px;
+	margin: 1px;
+	float: left;
+}
+.stacked {
+	padding: 2px;
+}
+.side_by_side {
+	display: inline-block;
+	vertical-align: top;
+}
+#right_menu_bar {
+	width: 280px;
+	height: 450px;
+	background: #d6dee9
+}
+#contig_us_map_canvas {
+	width: 500px;
+	height: 450px;
+}
+#wrap {
+	height: 100%;
+	width: 800px;
+	margin: 0 auto
+}
+#top {
+	margin-top: 20px;
+	width: 800px;
+	height: 20px;
+}
+#contig_us_map_canvas {
+	width: 500px;
+	height: 450px;
+}
+#panels {
+	margin-top: 10px;
+}
 
-   html { height: 100% }
-   body { height: 100%; margin: 0; padding: 0; clear: both; font-family: "Bryant", "Gill Sans", sans-serif;   }
-
-   
-   h1 { 
-   	text-align: left;
- 	font-size: 12pt;
- 	text-decoration: none;
- 	font-weight: normal;
- 	margin-bottom: 0.1em;
-   }
-
-   a {
-   	color  : #7592D3;
-   	text-decoration: none;
-   	
-   }
-   
-   p {
-   	 margin-top: 0.1em;
-  	 font-size: 10pt;
-   }   
-   
-   svg {  
-     background-color: #FFC;  
-   }
-
-   select {
-   	width: 100px;
-   }
-   
-   #wrap{ height: 100%; width: 800px; margin: 0 auto}
-
-   #top{
-   	margin-top: 20px;
-   	width: 800px;
-   	height: 80px;
-   	
-   }
-
-   #contig_us_map_canvas{
-   	width: 800px;
-   	height: 450px;	
-   }
- 
-   #map_title{
-   	float: right;
-   }
-        
-   #map_canvas {
-  	float: left;  
-    width: 450px;
-    height:100%;
-   }
-      
-   #info {
-  	float: left;  
-    width: 250px;
-    height:100%;
-   }
-   
-   #panels{
-   	margin-top: 10px;
-   }
-     
-   .filterPanel {
-   	width: 150px;
-   	height: 50px;
-   	margin: 1px;
-   	float: left;
-   }
-   
-   .label div {
-     padding: 1px;
-     margin-right: 20px;
-     margin: 1px;
-   	font-size: 10pt;
-   }
-      
-   .bar div {
-     background-color: #006666;
-     text-align: right;
-     padding: 1px;
-     margin: 1px;
-     color: white;
-     font-size: 10pt;
-     clear: both;
-   }   
-   
-   .leftSide div {
-   	width: 100px;
-   	float: left;
-   }
-   
-   .rightSide div {
-   	width: 100px;
-   	float: right;
-   }
-  
-   .label{
-   	 font-size:7pt;
-   	
-   }
-   

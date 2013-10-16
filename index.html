@@ -18,16 +18,26 @@
         <div id="wrap">
             <div id="top">
                 <h1>Admissions Data Visualization Tool</h1>
-                <p>
-                    Enter a CEEB:
-                    <input type="text" id="ceeb" value="380000">
-                    <input type="button" id="lookupButton" value="Lookup">
-                </p>
-                <p id="errormessage"> </p>
-                <div id="map_title"></div>
+                <p id="errormessage"></p>
             </div>
             <div id="bottom">
-                <div id="contig_us_map_canvas"></div>
+                <div class = "side_by_side">
+                    <div id="contig_us_map_canvas"></div>
+                </div>
+                <div class = "side_by_side">
+                    <div id="right_menu_bar">
+                        <div class = "stacked">
+                            <p>
+                                Enter a CEEB:
+                                <input type="text" id="ceeb" value="380000">
+                                <input type="button" id="lookupButton" value="Lookup">
+                            </p>
+                        </div>
+                        <div class = "stacked">
+                            <div id = "right_display"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="panels">
                 <div class="filterPanel" id="regionFilterPanel">
