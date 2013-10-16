@@ -72,6 +72,19 @@ cs441GoogleMapsViz.getErrorMsgElement = function() {
 };
 
 /*
+ * cs441GoogleMapsViz.getRightSidebarElement()
+ *
+ * This function gets the right sidebar element from the page.
+ *
+ * @param void
+ * @return The handle of the html element.
+ */
+cs441GoogleMapsViz.getRightSidebarElement = function() {
+
+	var els = document.getElementsByClassName("stacked");
+	return els[1];
+};
+/*
  *  cs441GoogleMapsViz.makeRequestor()
  *
  *  This function makes an object to make http requests.
@@ -170,20 +183,19 @@ cs441GoogleMapsViz.lookup = function(layerArray, geocoder) {
 
 		// Create a url for
 		// a subsequent GET request to a Google server.
-		var query = "SELECT 'Zip' FROM " + layerArray[1].eID + " WHERE Code = " + ceeb;
+		var query = "SELECT * FROM " + layerArray[1].eID + " WHERE Code = " + ceeb;
 
 		var url = "https://www.googleapis.com/fusiontables/v1/query";
 		url = url + "?sql=";
 		url = url + query;
 		url = url + " &key=" + cs441GoogleMapsViz.apikey;
 
-		function filterLayers() {
+		function handleResponse() {
 			if(cs441GoogleMapsViz.httpRequest.readyState === 4) {
 				if(cs441GoogleMapsViz.httpRequest.status === 200) {
 
 					// The code reaches this point because the Google server
 					// responded with some useful data.
-					console.log(cs441GoogleMapsViz.httpRequest.responseText);
 
 					// The response is just a string.  I need
 					// to parse it so that I can extract the zip code from it.
@@ -193,8 +205,10 @@ cs441GoogleMapsViz.lookup = function(layerArray, geocoder) {
 						// Set 	the zoom.
 						layerArray[0].map.setZoom(11);
 
-						var zipcode = response["rows"][0].toString();
-
+						var highSchoolName = response["rows"][0][0].toString();
+						var highSchoolAddress = response["rows"][0][1].toString();
+						var zipcode = response["rows"][0][4].toString();
+												
 						// Center the map.
 						centerAt(layerArray[0].map, zipcode, geocoder);
 
@@ -204,6 +218,8 @@ cs441GoogleMapsViz.lookup = function(layerArray, geocoder) {
 						// Filter the school layer by CEEB.
 						cs441GoogleMapsViz.filterByCEEB.call(layerArray[1], ceeb);
 						
+						// Display the textual result
+						cs441GoogleMapsViz.getRightSidebarElement().innerHTML = highSchoolName + '<br>' + highSchoolAddress;
 						
 					} else {
 						// Indicate to the user that I could not find that
@@ -217,7 +233,7 @@ cs441GoogleMapsViz.lookup = function(layerArray, geocoder) {
 	}
 
 	// Send the GET Request to the Google Server
-	cs441GoogleMapsViz.sendRequest(url, filterLayers);
+	cs441GoogleMapsViz.sendRequest(url, handleResponse);
 }
 
 /*
