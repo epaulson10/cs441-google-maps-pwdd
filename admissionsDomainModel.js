@@ -25,17 +25,17 @@ var cs441GoogleMapsViz = cs441GoogleMapsViz || {};
  * of each property is an array.  The first element of the array
  * is the two-letter state abbreviation associated with the region.
  * The remainder of the array is any subregions for the region.
- * 
+ *
  * TODO: Incomplete list.  I don't feel, either, that this is the
- * best way to organize this data.  
+ * best way to organize this data.
  */
 cs441GoogleMapsViz.regions = {
 	"Alaska" : ["AK"],
 	"Arizona" : ["AZ"],
-    "Californa" : ["CA"],
+	"Californa" : ["CA"],
 	"Colorado" : ["CO"],
 	"Hawaii" : ["HI"],
-    "Idaho" : ["ID"],
+	"Idaho" : ["ID"],
 	"Illinois" : ["IL"],
 	"Maine" : ["ME"],
 	"Minnesota" : ["MN"],
@@ -88,4 +88,40 @@ cs441GoogleMapsViz.convertRegionToState = function(region) {
 
 	return state;
 
+}
+/*
+ * getHighSchoolName
+ *
+ * Based on the construction of the Fusion Table used to supply high
+ * school address and CEEB information, this function extracts
+ * the high school name from a Fusion Table response and returns
+ * it as a string.
+ *
+ */
+cs441GoogleMapsViz.getHighSchoolName = function(response) {
+	return response["rows"][0][0].toString();
+}
+/*
+ * getHighSchoolAddress
+ *
+ * Based on the construction of the Fusion Table used to supply high
+ * school address and CEEB information, this function extracts
+ * the high school address from a Fusion Table response and returns
+ * it as a string.
+ *
+ */
+cs441GoogleMapsViz.getHighSchoolAddress = function(response) {
+	return response["rows"][0][1].toString();
+}
+/*
+ * getZipcode
+ *
+ * Based on the construction of the Fusion Table used to supply high
+ * school address and CEEB information, this function extracts
+ * the high school zipcode from a Fusion Table response and returns
+ * it as a string.
+ *
+ */
+cs441GoogleMapsViz.getZipcode = function(response) {
+	return response["rows"][0][4].toString();
 }

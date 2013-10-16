@@ -205,10 +205,10 @@ cs441GoogleMapsViz.lookup = function(layerArray, geocoder) {
 						// Set 	the zoom.
 						layerArray[0].map.setZoom(11);
 
-						var highSchoolName = response["rows"][0][0].toString();
-						var highSchoolAddress = response["rows"][0][1].toString();
-						var zipcode = response["rows"][0][4].toString();
-												
+						var highSchoolName =  cs441GoogleMapsViz.getHighSchoolName(response);
+						var highSchoolAddress = cs441GoogleMapsViz.getHighSchoolAddress(response);
+						var zipcode = cs441GoogleMapsViz.getZipcode(response);
+											
 						// Center the map.
 						centerAt(layerArray[0].map, zipcode, geocoder);
 
