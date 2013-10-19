@@ -3,16 +3,7 @@
     <head>
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
         <title>Admissions Data Visualization Tool</title>
-        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-        <script type="text/javascript" src="utilities.js"></script>
-        <script type="text/javascript" src="filterMenus.js"></script>
-        <script type="text/javascript" src="usmap.js"></script>
-        <script type="text/javascript" src="geocode.js"></script>
-        <script type="text/javascript" src="information.js"></script>
-        <script type="text/javascript" src="layers.js"></script>
-        <script type="text/javascript" src="admissionsDomainModel.js"></script>
-        <script type="text/javascript" src="usCensusDomainModel.js"></script>
-        <link href="style.css" rel="stylesheet" type="text/css" />
+        <link href="public/css/style.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <div id="wrap">
@@ -45,5 +36,21 @@
                 </div>
             </div>
         </div>
+        
+          <!--
+            The following script tag utilizes RequireJS to perform AMD loading of
+            the JavaScript files listed in main.js
+
+            The data-main attribute tells RequireJS which file will be used to
+            bootstrap our environment. In this case it will look for main.js
+            in the public/js/ directory (the path is relative to the site root).
+        -->
+
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>        
+        <script data-main='main' src='public/js/vendor/require.js'></script>
+        
+          <!-- JavaScript at the bottom for fast page loading -->
+
+        
     </body>
 </html>
