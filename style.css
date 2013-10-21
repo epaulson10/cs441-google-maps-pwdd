@@ -39,26 +39,22 @@
    	
    }
 
+   .side_by_side {
+        display: inline-block;
+	vertical-align: top;
+   }
+
+   #left_info_bar {
+        width: 290px;
+	height: 450px;
+	background: #555555;
+   }
+
    #contig_us_map_canvas{
-   	width: 800px;
+   	width: 500px;
    	height: 450px;	
    }
  
-   #map_title{
-   	float: right;
-   }
-        
-   #map_canvas {
-  	float: left;  
-    width: 450px;
-    height:100%;
-   }
-      
-   #info {
-  	float: left;  
-    width: 250px;
-    height:100%;
-   }
    
    #panels{
    	margin-top: 10px;
@@ -92,21 +88,6 @@
      font-size: 10pt;
      clear: both;
    }   
-   
-   .leftSide div {
-   	width: 100px;
-   	float: left;
-   }
-   
-   .rightSide div {
-   	width: 100px;
-   	float: right;
-   }
-  
-   .label{
-   	 font-size:7pt;
-   	
-   }
    
    #zipInfo {
    	 color: blue;
