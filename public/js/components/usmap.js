@@ -177,7 +177,7 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
 	var initialize = function() {
 
 		// Set the Google API key for this namespace.
-		apikey = 'Your API key here';
+		apikey = 'AIzaSyDPIDblZh-H55gEkg7u6KVry1OZ-pgGpsQ';
 
 		// Create the httpRequestor for this namespace.
 		utilities.makeRequestor();
