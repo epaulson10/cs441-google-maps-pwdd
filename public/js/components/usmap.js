@@ -53,11 +53,10 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
 
 			// Create a url for
 			// a subsequent GET request to a Google server.
-			var query = "SELECT * FROM " + layerArray[1].eID + " WHERE Code = " + ceeb;
+			var query = "SELECT * FROM " + layerArray[0].eID + " WHERE Code = " + ceeb;
 
 			var url = "https://www.googleapis.com/fusiontables/v1/query";
-			url = url + "?sql=";
-			url = url + query;
+			url = url + "?sql=" + query;
 			url = url + " &key=" + apikey;
 
 			function handleResponse() {
@@ -73,20 +72,21 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
 
 						if(response["rows"] != undefined) {
 							// Set 	the zoom.
-							layerArray[0].map.setZoom(11);
+							layerArray[0].map.setZoom(6);
 
 							var highSchoolName = admissions.getHighSchoolName(response);
 							var highSchoolAddress = admissions.getHighSchoolAddress(response);
 							var zipcode = admissions.getZipcode(response);
+                                                        var state = admissions.getState(response);
 
 							// Center the map.
-							centerAt(layerArray[0].map, zipcode, geocoder);
+							centerAt(layerArray[0].map, state, geocoder);
 
 							// Filter the zip layer by zip
-							layers.filterByZip.call(layerArray[0], zipcode);
+							//layers.filterByZip.call(layerArray[0], zipcode);
 
 							// Filter the school layer by CEEB.
-							layers.filterByCEEB.call(layerArray[1], ceeb);
+							layers.filterByCEEB.call(layerArray[0], ceeb);
 
 							// Display the textual result
 							utilities.getRightSidebarElement().innerHTML = highSchoolName + '<br>' + highSchoolAddress;
@@ -205,14 +205,15 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
 		//
 		//	Construct the layers
 		//
+
 		// Create a Layer object for the zip code boundary layer.  The second parameter
 		// creates the Google FusionTablesLayer object.  The Layer is not currently being
 		// filtered, so the final parameter is false.
-		var zipLayer = new layers.Layer("zips", new google.maps.FusionTablesLayer({
-			query : {
-				from : zipEID
-			}
-		}), zipEID, map, 'ZipCodeArea', false);
+		// var zipLayer = new layers.Layer("zips", new google.maps.FusionTablesLayer({
+		// 	query : {
+		// 		from : zipEID
+		// 	}
+		// }), zipEID, map, 'ZipCodeArea', false);
 
 		// Create a Layer object for the high schools layer.  The second parameter
 		// creates the Google FusionTablesLayer object.  The Layer is not currently being
@@ -225,7 +226,7 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
 
 		// Create an array of Layers
 		var layerArray = new Array();
-		layerArray.push(zipLayer);
+		// layerArray.push(zipLayer);
 		layerArray.push(schoolLayer);
 
 		// Attach the function lookup() to the lookupButton on the main page.

@@ -119,6 +119,17 @@ define([], function() {
 	var getZipcode = function(response) {
 		return response["rows"][0][4].toString();
 	};
+
+
+
+        /*
+         * getState
+         *
+         */
+        var getState = function(response) {
+                return response["rows"][0][3].toString();
+        };
+
 	// Any functions defined in this return statement are considered public
 	// functions by RequireJS, and accessible through the namespace that
 	// is attached to this module when loaded in other files.
@@ -127,6 +138,7 @@ define([], function() {
 		convertRegionToState : convertRegionToState,
 		getHighSchoolName : getHighSchoolName,
 		getHighSchoolAddress : getHighSchoolAddress,
-		getZipcode : getZipcode
+		getZipcode : getZipcode,
+                getState : getState
 	};
 });
