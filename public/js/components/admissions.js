@@ -145,12 +145,17 @@ define([], function() {
     // functions by RequireJS, and accessible through the namespace that
     // is attached to this module when loaded in other files.
     return {
+        CEEB: "Code",
+        HSNAME: "HighSchool",
+        CITY: "City",
+        STATE: "State",
+        ZIP: "Zip",
         getRegions : getRegions,
-                   convertRegionToState : convertRegionToState,
-                   getHighSchoolName : getHighSchoolName,
-                   getHighSchoolAddress : getHighSchoolAddress,
-                   getZipcode : getZipcode,
-                   getState : getState,
-                   getCity : getCity
+        convertRegionToState : convertRegionToState,
+        getHighSchoolName : getHighSchoolName,
+        getHighSchoolAddress : getHighSchoolAddress,
+        getZipcode : getZipcode,
+        getState : getState,
+        getCity : getCity
     };
 });

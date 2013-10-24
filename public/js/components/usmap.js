@@ -57,7 +57,13 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
 
             // Create a url for
             // a subsequent GET request to a Google server.
-            var query = "SELECT * FROM " + layerArray[0].eID + " WHERE Code = " + sterm;
+            var term;
+            if (stype != admissions.ZIP && stype != admissions.CEEB) {
+                term = "'" + sterm + "'";
+            } else {
+                term = sterm;
+            }
+            var query = "SELECT * FROM " + layerArray[0].eID + " WHERE " + stype + " = " + term;
 
             var url = "https://www.googleapis.com/fusiontables/v1/query";
             url = url + "?sql=" + query;
@@ -86,25 +92,25 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
                             // Center the map.
                             var center;
                             switch(stype) {
-                                case "ceeb":
-                                case "hsname":
+                                case admissions.CEEB:
+                                case admissions.HSNAME:
                                     center = hsAddress;
                                     break; 
-                                case "zip":
+                                case admissions.ZIP:
                                     center = zipcode;
                                     break;
-                                case "state":
+                                case admissions.STATE:
                                     center = state;
                                     break;
-                                case "city":
+                                case admissions.CITY:
                                     center = city + " " + state;
                                     break;
                             }
                             centerAt(layerArray[0].map, center, geocoder);
 
-                            // Filter the school layer by CEEB.
-                            layers.filterByCEEB.call(layerArray[0], sterm);
-
+                            // Filter the layer to display only the desired schools
+                            layers.filterBy.call(layerArray[0], stype, sterm);
+                            
                             // Display the textual result
                             utilities.getRightSidebarElement().innerHTML = hsName + '<br>' + hsAddress;
 
@@ -139,15 +145,15 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
         var zoom;
 
         switch(stype) {
-            case "zip":
-            case "ceeb":
-            case "hsname":
+            case admissions.ZIP:
+            case admissions.CEEB:
+            case admissions.HSNAME:
                 zoom = 12;
                 break;
-            case "state":
+            case admissions.STATE:
                 zoom = 6;
                 break;
-            case "city":
+            case admissions.CITY:
                 zoom = 11;
                 break;
             default:
