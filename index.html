@@ -28,31 +28,43 @@
                      <input type="button" id="lookupButton" value="Lookup">
                      </p>
                      <h3>Filter By:</h3>
+
                      <input type="radio" name=filter value="none" checked>None<br>
-                     <span style="margin-left: 5px">GPA</span><br>
-                     <div id="SAT_group">
-                        <input type="radio" name=filter value="total">Total<br>
-                        <input type="radio" name=filter value="reading">Reading<br>
-                        <input type="radio" name=filter value="math">Math<br>
-                     </div>
-                     <input type="radio" name=filter value="gender">Gender<br>
-                     <input type="radio" name=filter value="major">Major<br>
-                  </div>
-                                 </div>
-            </div>
-            <div class = "side_by_side">
-               <div id="contig_us_map_canvas"></div>
-               <div id="display_box">
-                     <div class = "stacked">
-                     <div id = "right_display"></div>
-                  </div>
+                     <span style="margin-left: 5px">GPA</span>
+                     <input type="text" name="GPA_input" class="range"> -
+                     <input type="text" name="GPA_input" class="range"><br>
+                  <div id="SAT_group">
+                     <input type="radio" name=filter value="total">Total
+                     <input type="text" name="GPA_input" class="range"> -
+                     <input type="text" name="GPA_input" class="range"><br>
 
-               </div>
+                  <input type="radio" name=filter value="reading">Reading
+                  <input type="text" name="GPA_input" class="range"> -
+                  <input type="text" name="GPA_input" class="range"><br>
 
-            </div>
-            <div class="side_by_side" id="top_schools">
-               <h3>Top Schools</h3>
-            </div>
+               <input type="radio" name=filter value="math">Math
+               <input type="text" name="GPA_input" class="range"> -
+               <input type="text" name="GPA_input" class="range"><br>
+
+         </div>
+         <input type="radio" name=filter value="gender">Gender<br>
+         <input type="radio" name=filter value="major">Major<br>
+      </div>
+   </div>
+</div>
+<div class = "side_by_side">
+   <div id="contig_us_map_canvas"></div>
+   <div id="display_box">
+      <div class = "stacked">
+         <div id = "right_display"></div>
+      </div>
+
+   </div>
+
+</div>
+<div class="side_by_side" id="top_schools">
+   <h3>Top Schools</h3>
+</div>
 
          </div>
          <div id="panels">

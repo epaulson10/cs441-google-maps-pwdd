@@ -8,6 +8,7 @@
 *.shp
 *.shp.xml
 *.shx
+*.swp
 adminData/*.csv
 adminData/auto/
 adminData/.R*
