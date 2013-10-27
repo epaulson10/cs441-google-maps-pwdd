@@ -120,6 +120,8 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
                         }
 
                     }
+					//have only 1 requestor, so have to link requests
+					getAppInfo(stype, sterm, null);
                 }
             }
 
@@ -282,6 +284,96 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
             return lookup(layerArray, geocoder);
         });
     };
+	
+	//TODO: need to move this to a new file, but I couldn't because
+	//Require.js was being a turd
+	
+	 /*
+     *  convertColumn()
+     *
+     *  Converts between the column names in the fusion table that displays 
+	 *  information on the map and the one that adds up all the
+	 *  applicant info.
+     *
+     *  @param input The column name in the HS Geo info fusion table
+     *  @return Column name in applicant info fusion table
+     */
+	var convertColumn = function(input){ 
+        switch(input) { 
+            case admissions.ZIP: 
+                input = "HSZip"; 
+                break; 
+            case admissions.CEEB: 
+                input = "HighSchoolCode"; 
+                break; 
+            case admissions.HSNAME: 
+                input = "HSName"; 
+                break; 
+            case admissions.STATE: 
+                input = "HSState"; 
+                break; 
+            case admissions.CITY: 
+                input = "HSCity"; 
+                break; 
+        } 
+        console.log("x" +input); 
+        return input; 
+    }; 
+    var getAppInfo = function(column,value,restrict){ 
+        var tableId = '1w-D42ugHUlbWRt_s4NFUDkB7NURvYQQoB55dSW8'; 
+        column = convertColumn(column); 
+		var match = " CONTAINS IGNORING CASE ";
+		
+		//need to deal with integer and string matches
+		if(column == "HighSchoolCode"){
+			match = " = ";
+		}
+		else{
+			value = "'"+value+"'"; 
+		}
+        var url = "https://www.googleapis.com/fusiontables/v1/query?sql="; 
+        url += "SELECT * FROM " + tableId; 
+        url += " WHERE " + column + match + value; 
+        url += "&key=" + apikey; 
+        console.log(url); 
+  
+        function handleResponse2(){ 
+            if(httpRequest.readyState === 4) { 
+                if(httpRequest.status === 200) { 
+                    var response = JSON.parse(httpRequest.responseText); 
+                    console.log(response); 
+                    var tApplied = 0; 
+                    var tAccepted = 0; 
+                    var tEnrolled = 0; 
+                    var tConfirmed = 0; 
+                    rows = response["rows"]; 
+                    for(var i = 0; i < rows.length; i++){ 
+                        //console.log(rows[i][8] + rows[i][9] + rows[i][10] + rows[i][11] ); 
+                        if(rows[i][8] != "I"){ 
+                            tApplied ++; 
+                        }                     
+                        if(rows[i][9] == "A"){ 
+                            tAccepted ++; 
+                        } 
+                        if(rows[i][11] == "Y"){ 
+                            tEnrolled ++; 
+                        }                     
+                        if(rows[i][10] == "CONF"){ 
+                            tConfirmed ++; 
+                        } 
+                    } 
+                    //document.getElementById("right_display").value = "Applied: "+tApplied+" Accepted: "+tAccepted+" Confirmed: "+ tConfirmed+" Enrolled: "+ tEnrolled; 
+                    var temp = "Applied: "+tApplied+" Accepted: "+tAccepted+" Confirmed: "+ tConfirmed+" Enrolled: "+ tEnrolled; 
+                    console.log(temp); 
+                    utilities.getRightSidebarElement().innerHTML = column + " : " + value +"\n" + temp; 
+                } 
+            } 
+        } 
+        utilities.sendRequest(url, handleResponse2); 
+    }; 
+	
+	
+	
     // Any functions defined in this return statement are considered public
     // functions by RequireJS, and accessible through the namespace that
     // is attached to this module when loaded in other files.
