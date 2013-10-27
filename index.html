@@ -1,90 +1,115 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-      <title>Admissions Data Visualization Tool</title>
-      <link href="public/css/style.css" rel="stylesheet" type="text/css" />
-   </head>
-   <body>
-      <div id="wrap">
-         <div id="top">
-            <h1>Admissions Data Visualization Tool</h1>
-            <p id="errormessage"></p>
-         </div>
-         <div id="bottom">
-            <div class = "side_by_side">
-               <div id="right_menu_bar">
-                  <div class = "stacked">
-                     <h3>Search by:</h3>
-                     <p>
-                     <select id="search_type">
-                        <option value="State">State</option>
-                        <option value="City">City</option>
-                        <option value="Zip">Zip</option>
-                        <option value="Code">CEEB</option>
-                        <option value="HighSchool">High School</option>
-                     </select>
-                     <input type="text" id="search_term" value="380000">
-                     <input type="button" id="lookupButton" value="Lookup">
-                     </p>
-                     <h3>Filter By:</h3>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<title>Admissions Data Visualization Tool</title>
+		<link href="public/css/style.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="top">
+				<h1>Admissions Data Visualization Tool</h1>
+				<p id="errormessage"></p>
+			</div>
+			<div id="bottom">
+				<div class = "side_by_side">
+					<div id="right_menu_bar">
+						<div class = "stacked">
+							<h3>Search by:</h3>
+							<p>
+								<select id="search_type">
+									<option value="State">State</option>
+									<option value="City">City</option>
+									<option value="Zip">Zip</option>
+									<option value="Code">CEEB</option>
+									<option value="HighSchool">High School</option>
+								</select>
+								<input type="text" id="search_term" value="OR">
+								<input type="button" id="lookupButton" value="Lookup">
+							</p>
+							<div id="filter_section">
+							<h3>Filter By:</h3>
 
-                     <input type="radio" name=filter value="none" checked>None<br>
-                     <span style="margin-left: 5px">GPA</span>
-                     <input type="text" name="GPA_input" class="range"> -
-                     <input type="text" name="GPA_input" class="range"><br>
-                  <div id="SAT_group">
-                     <input type="radio" name=filter value="total">Total
-                     <input type="text" name="GPA_input" class="range"> -
-                     <input type="text" name="GPA_input" class="range"><br>
+							<input type="radio" name=filter value="none" checked>
+							None
+							<br>
+							<span style="margin-left: 5px">GPA</span>
+							<input type="text" name="GPA_input" class="range">
+							-
+							<input type="text" name="GPA_input" class="range">
+							<br>
+							<div id="SAT_group">
+								<input type="radio" name=filter value="total">
+								Total
+								<input type="text" name="GPA_input" class="range">
+								-
+								<input type="text" name="GPA_input" class="range">
+								<br>
 
-                  <input type="radio" name=filter value="reading">Reading
-                  <input type="text" name="GPA_input" class="range"> -
-                  <input type="text" name="GPA_input" class="range"><br>
+								<input type="radio" name=filter value="reading">
+								Reading
+								<input type="text" name="GPA_input" class="range">
+								-
+								<input type="text" name="GPA_input" class="range">
+								<br>
 
-               <input type="radio" name=filter value="math">Math
-               <input type="text" name="GPA_input" class="range"> -
-               <input type="text" name="GPA_input" class="range"><br>
+								<input type="radio" name=filter value="math">
+								Math
+								<input type="text" name="GPA_input" class="range">
+								-
+								<input type="text" name="GPA_input" class="range">
+								<br>
 
-         </div>
-         <input type="radio" name=filter value="gender">Gender<br>
-         <input type="radio" name=filter value="major">Major<br>
-      </div>
-   </div>
-</div>
-<div class = "side_by_side">
-   <div id="contig_us_map_canvas"></div>
-   <div id="display_box">
-      <div class = "stacked">
-         <div id = "right_display"></div>
-      </div>
+							</div>
+							<input type="radio" name=filter value="gender">
+							Gender
+							<select name="gender_select">
+								<option value="male">Male</option>
+								<option value="female">Female</option>
+							</select>
+							<br>
+							<input type="radio" name=filter value="major">
+							Major
+							<select name="major_select" style="width: 150px">
+								<option value="cs">Computer Science</option>
+								<option value="mth">Mathematics</option>
+							</select>
+							<br>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class = "side_by_side">
+					<div id="contig_us_map_canvas"></div>
+					<div id="display_box">
+						<div class = "stacked">
+							<div id = "right_display"></div>
+						</div>
 
-   </div>
+					</div>
 
-</div>
-<div class="side_by_side" id="top_schools">
-   <h3>Top Schools</h3>
-</div>
+				</div>
+				<div class="side_by_side" id="top_schools">
+					<h3>Top Schools</h3>
+				</div>
 
-         </div>
-         <div id="panels">
-         </div>
-      </div>
+			</div>
+			<div id="panels"></div>
+		</div>
 
-      <!--
-      The following script tag utilizes RequireJS to perform AMD loading of
-      the JavaScript files listed in main.js
+		<!--
+		The following script tag utilizes RequireJS to perform AMD loading of
+		the JavaScript files listed in main.js
 
-      The data-main attribute tells RequireJS which file will be used to
-      bootstrap our environment. In this case it will look for main.js
-      in the public/js/ directory (the path is relative to the site root).
-      -->
+		The data-main attribute tells RequireJS which file will be used to
+		bootstrap our environment. In this case it will look for main.js
+		in the public/js/ directory (the path is relative to the site root).
+		-->
 
-      <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>        
-      <script data-main='main' src='public/js/vendor/require.js'></script>
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+		<script data-main='main' src='public/js/vendor/require.js'></script>
 
-      <!-- JavaScript at the bottom for fast page loading -->
+		<!-- JavaScript at the bottom for fast page loading -->
 
-
-   </body>
+	</body>
 </html>

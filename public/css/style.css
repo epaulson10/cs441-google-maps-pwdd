@@ -88,6 +88,10 @@ select {
 
 }
 
+#filter_section {
+	margin: 150px 0;
+}
+
 #panels {
 	margin-top: 10px;
 }
