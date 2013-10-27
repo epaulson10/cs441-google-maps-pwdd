@@ -88,6 +88,7 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
                             var zipcode = admissions.getZipcode(response);
                             var city = admissions.getCity(response);
                             var state = admissions.getState(response);
+							var ceeb = admissions.getCEEB(response);
 
                             // Center the map.
                             var center;
@@ -121,7 +122,7 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
 
                     }
 					//have only 1 requestor, so have to link requests
-					getAppInfo(stype, sterm, null);
+					getAppInfo(stype, sterm, null,ceeb);
                 }
             }
 
@@ -316,24 +317,44 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
                 input = "HSCity"; 
                 break; 
         } 
-        console.log("x" +input); 
         return input; 
     }; 
-    var getAppInfo = function(column,value,restrict){ 
+	
+	
+	/*
+     *  getAppInfo()
+     *
+     *  Find the total number of studends that have enrolled, applied,
+	 *  been accepted, and confirmed.
+     *
+     *  @param input The column name in the HS Geo info fusion table
+     *  @return Column name in applicant info fusion table
+     */
+    var getAppInfo = function(column,value,restrict,ceeb){ 
+		var origVal = value;
+		console.log("CEEB: " + ceeb);
         var tableId = '1w-D42ugHUlbWRt_s4NFUDkB7NURvYQQoB55dSW8'; 
         column = convertColumn(column); 
 		var match = " CONTAINS IGNORING CASE ";
+		var firstHS = "";
 		
 		//need to deal with integer and string matches
-		if(column == "HighSchoolCode"){
+		if(column == "HighSchoolCode" || column == "HSZip"){
 			match = " = ";
 		}
 		else{
 			value = "'"+value+"'"; 
+			
+			//only want to get data for the HS we zoom in on
+			if(column == "HSName"){
+				firstHS = " AND HighSchoolCode = " + ceeb;
+			}
 		}
+		
+		//create URL for request
         var url = "https://www.googleapis.com/fusiontables/v1/query?sql="; 
         url += "SELECT * FROM " + tableId; 
-        url += " WHERE " + column + match + value; 
+        url += " WHERE " + column + match + value + firstHS; 
         url += "&key=" + apikey; 
         console.log(url); 
   
@@ -342,14 +363,17 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
                 if(httpRequest.status === 200) { 
                     var response = JSON.parse(httpRequest.responseText); 
                     console.log(response); 
+					
+					//I bet there is a way to do this in one line
                     var tApplied = 0; 
                     var tAccepted = 0; 
                     var tEnrolled = 0; 
                     var tConfirmed = 0; 
+					
                     rows = response["rows"]; 
+					//find the totals for students taht have applied, confirmed, enrolled, and accepted
                     for(var i = 0; i < rows.length; i++){ 
-                        //console.log(rows[i][8] + rows[i][9] + rows[i][10] + rows[i][11] ); 
-                        if(rows[i][8] != "I"){ 
+						if(rows[i][8] != "I"){ 
                             tApplied ++; 
                         }                     
                         if(rows[i][9] == "A"){ 
@@ -362,10 +386,17 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
                             tConfirmed ++; 
                         } 
                     } 
-                    //document.getElementById("right_display").value = "Applied: "+tApplied+" Accepted: "+tAccepted+" Confirmed: "+ tConfirmed+" Enrolled: "+ tEnrolled; 
-                    var temp = "Applied: "+tApplied+" Accepted: "+tAccepted+" Confirmed: "+ tConfirmed+" Enrolled: "+ tEnrolled; 
-                    console.log(temp); 
-                    utilities.getRightSidebarElement().innerHTML = column + " : " + value +"\n" + temp; 
+                    
+                    var temp = "Applied : "+tApplied+"<br>Accepted : "+tAccepted+"<br>Confirmed : "+ tConfirmed+"<br>Enrolled : "+ tEnrolled; 
+                    
+					//make the column name more human readable for printing
+					if(column != "HighSchoolCode"){
+						column = column.substring(2)//rip of HS
+					}
+					else{
+						column = "High School Code";
+					}
+					utilities.getRightSidebarElement().innerHTML ="Searched by " + column + " : " + origVal +"<br>" + temp; 
                 } 
             } 
         } 

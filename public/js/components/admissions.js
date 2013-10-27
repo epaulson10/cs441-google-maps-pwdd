@@ -139,6 +139,9 @@ define([], function() {
     var getCity = function(response) {
         return response["rows"][0][2].toString();
     };
+	var getCEEB = function(response) {
+        return response["rows"][0][5].toString();
+    };
 
 
     // Any functions defined in this return statement are considered public
@@ -156,6 +159,7 @@ define([], function() {
         getHighSchoolAddress : getHighSchoolAddress,
         getZipcode : getZipcode,
         getState : getState,
-        getCity : getCity
+        getCity : getCity,
+		getCEEB : getCEEB
     };
 });
