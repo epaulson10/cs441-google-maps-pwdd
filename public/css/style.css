@@ -44,7 +44,7 @@ select {
 }
 #right_menu_bar {
 	width: 280px;
-	height: 450px;
+	height: 600px;
 	background: #d6dee9
 }
 #contig_us_map_canvas {
@@ -53,7 +53,7 @@ select {
 }
 #wrap {
 	height: 100%;
-	width: 800px;
+	width: 1200px;
 	margin: 0 auto
 }
 #top {
@@ -65,7 +65,24 @@ select {
 	width: 500px;
 	height: 450px;
 }
+#top_schools{
+   width: 280px;
+	height: 600px;
+	background: #d6dee9
+}
+#display_box{
+   width: 500px;
+   height: 145px;
+   background: #d6dee9;
+   margin-top: 5px;
+
+}
+
 #panels {
 	margin-top: 10px;
+}
+
+#SAT_group{
+   margin-left: 15px;
 }
 
