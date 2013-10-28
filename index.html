@@ -29,52 +29,80 @@
 							</p>
 							<div id="filter_section">
 							<h3>Filter By:</h3>
-
+							<table>
+								<tr>
+									<td>
 							<input type="radio" name=filter value="none" checked>
 							None
-							<br>
-							<span style="margin-left: 5px">GPA</span>
-							<input type="text" name="GPA_input" class="range">
+								</td>
+									</tr>
+							<br/>
+								<tr>
+									<td>
+							<input type="radio" name="filter" value="gpa">
+							GPA
+								</td><td>
+							<input type="text" name="GPA_input" class="range" value="0.0">
 							-
-							<input type="text" name="GPA_input" class="range">
-							<br>
-							<div id="SAT_group">
-								<input type="radio" name=filter value="total">
-								Total
-								<input type="text" name="GPA_input" class="range">
-								-
-								<input type="text" name="GPA_input" class="range">
-								<br>
-
-								<input type="radio" name=filter value="reading">
-								Reading
-								<input type="text" name="GPA_input" class="range">
-								-
-								<input type="text" name="GPA_input" class="range">
-								<br>
-
-								<input type="radio" name=filter value="math">
-								Math
-								<input type="text" name="GPA_input" class="range">
-								-
-								<input type="text" name="GPA_input" class="range">
-								<br>
-
-							</div>
+							<input type="text" name="GPA_input" class="range" value ="4.0">
+								</td>
+									</tr>
+								<tr>
+									<td>
 							<input type="radio" name=filter value="gender">
 							Gender
+								</td><td>
 							<select name="gender_select">
-								<option value="male">Male</option>
-								<option value="female">Female</option>
+							<option value="male">Male</option>
+							<option value="female">Female</option>
 							</select>
-							<br>
+									</td>
+									</tr>
+								<tr>
+									<td>
 							<input type="radio" name=filter value="major">
 							Major
+								</td><td>
 							<select name="major_select" style="width: 150px">
-								<option value="cs">Computer Science</option>
-								<option value="mth">Mathematics</option>
+							<option value="cs">Computer Science</option>
+							<option value="mth">Mathematics</option>
 							</select>
-							<br>
+									</td>
+									</tr>
+								</table>
+							<table>
+									<CAPTION><EM>SAT Scores:</EM></CAPTION>
+									<tr>
+										<td>
+								<input type="radio" name=filter value="total">
+								SAT Total
+									</td><td>
+								<input type="text" align="LEFT" name="SAT_input" class="range" value="0">
+								-
+								<input type="text" name="SAT_input" class="range" value="1600">
+									</td>
+									</tr>
+									<tr>
+										<td>
+								<input type="radio" name=filter value="reading">
+								SAT Reading
+									</td><td>
+								<input type="text" name="SAT-r_input" class="range" value="0">
+								-
+								<input type="text" name="SAT-r_input" class="range" value="800">
+									</td>
+										</tr>
+									<tr>
+										<td>
+								<input type="radio" name=filter value="math">
+								SAT Math
+									</td><td>
+								<input type="text" name="SAT-m_input" class="range" value="0">
+								-
+								<input type="text" name="SAT-m_input" class="range" value ="800">
+									</td>
+										</tr>
+									</table>
 							</div>
 						</div>
 					</div>
