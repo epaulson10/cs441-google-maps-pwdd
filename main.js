@@ -29,7 +29,8 @@ require.config({
         'admissions':'components/admissions',
         'layers':'components/layers',
         'census':'components/census',
-        'usmap':'components/usmap'
+        'usmap':'components/usmap',
+        'calculate' : 'components/calculate'
     }
 });
 
@@ -54,8 +55,9 @@ require([
     'admissions',
     'layers',
     'census',
-    'usmap'
-], function($,utilities,filterMenu,admissions,layers,census,usmap) {
+    'usmap',
+    'calculate'
+], function($,utilities,filterMenu,admissions,layers,census,usmap,calculate) {
 //], function($, util, usmap) {
 
         // Note that the order of definition is VERY important. In the closure
