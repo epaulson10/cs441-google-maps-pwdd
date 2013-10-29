@@ -77,7 +77,7 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
                         // responded with some useful data.
 
                         var response = JSON.parse(httpRequest.responseText);
-
+                        console.log(response);
                         if(response["rows"] != undefined) {
                             // Set the zoom.
                             var zoomLvl = getZoomLevel(stype);
@@ -112,17 +112,16 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
                             // Filter the layer to display only the desired schools
                             layers.filterBy.call(layerArray[0], stype, sterm);
                             
-                            // Display the textual result
-                            utilities.getRightSidebarElement().innerHTML = hsName + '<br>' + hsAddress;
+                            //have only 1 requestor, so have to link requests
+                            getAppInfo(stype, sterm, null,ceeb);
 
                         } else {
                             // Indicate to the user their search term was not found 
-                            utilities.getErrorMsgElement().innerHTML = "Cannot locate " + stype + ": " + sterm + ".";
+                            //TODO: figure out why getErrorElement doesn't work
+                            utilities.getRightSidebarElement().innerHTML = "Cannot locate " + stype + ": " + sterm + ".";
                         }
 
                     }
-					//have only 1 requestor, so have to link requests
-					getAppInfo(stype, sterm, null,ceeb);
                 }
             }
 
@@ -327,14 +326,16 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
      *  Find the total number of studends that have enrolled, applied,
 	 *  been accepted, and confirmed.
      *
-     *  @param input The column name in the HS Geo info fusion table
+     *  @param column The column the user is searching by
+     *  @param value What was in the text box
+     *  @param restriction What filter was selected, for now is null
+     *  @param ceeb The HS lookup zoomed in on. Is used to handle HS name searches
      *  @return Column name in applicant info fusion table
      */
     var getAppInfo = function(column,value,restrict,ceeb){ 
-		var origVal = value;
-		console.log("CEEB: " + ceeb);
-        var tableId = '1w-D42ugHUlbWRt_s4NFUDkB7NURvYQQoB55dSW8'; 
-        column = convertColumn(column); 
+        column = convertColumn(column);
+
+        //set defaults for variables
 		var match = " CONTAINS IGNORING CASE ";
 		var firstHS = "";
 		
@@ -343,65 +344,81 @@ define(['./utilities', './filterMenu', './admissions', './layers'], function(uti
 			match = " = ";
 		}
 		else{
+            //silly fusion table query needs '' around term
 			value = "'"+value+"'"; 
 			
 			//only want to get data for the HS we zoom in on
-			if(column == "HSName"){
+			if(column == "HSName" && ceeb != undefined){
 				firstHS = " AND HighSchoolCode = " + ceeb;
 			}
 		}
 		
 		//create URL for request
         var url = "https://www.googleapis.com/fusiontables/v1/query?sql="; 
-        url += "SELECT * FROM " + tableId; 
+        url += "SELECT * FROM " + APP_TABLE_ID; 
         url += " WHERE " + column + match + value + firstHS; 
         url += "&key=" + apikey; 
         console.log(url); 
-  
-        function handleResponse2(){ 
-            if(httpRequest.readyState === 4) { 
-                if(httpRequest.status === 200) { 
-                    var response = JSON.parse(httpRequest.responseText); 
-                    console.log(response); 
-					
-					//I bet there is a way to do this in one line
-                    var tApplied = 0; 
-                    var tAccepted = 0; 
-                    var tEnrolled = 0; 
-                    var tConfirmed = 0; 
-					
+   
+        utilities.sendRequest(url, appResponse); 
+    }; 
+
+    /*
+     *  appResponse()
+     *
+     *  Handles the response from the fusion table hosted at:
+     *  https://www.google.com/fusiontables/DataSource?docid=1w-D42ugHUlbWRt_s4NFUDkB7NURvYQQoB55dSW8#rows:id=1
+     *  Populates the textbox beneath the map based on the query send in getAppInfo()
+     */
+    var appResponse = function(){ 
+        var search = utilities.getSearchType();
+        var term = utilities.getSearchTerm();
+        if(httpRequest.readyState === 4) { 
+            if(httpRequest.status === 200) { 
+                var response = JSON.parse(httpRequest.responseText); 
+                console.log(response); 
+                
+                //initialize counters to zero
+                var tApplied = tAccepted = tEnrolled = tConfirmed = 0; 
+                
+                if(response["rows"] != undefined) {
+                    //find the totals for students that have applied, confirmed, enrolled, and accepted
                     rows = response["rows"]; 
-					//find the totals for students taht have applied, confirmed, enrolled, and accepted
                     for(var i = 0; i < rows.length; i++){ 
-						if(rows[i][8] != "I"){ 
+                        if(rows[i][APPLIED] != "I"){ 
                             tApplied ++; 
                         }                     
-                        if(rows[i][9] == "A"){ 
+                        if(rows[i][ACCEPTED] == "A"){ 
                             tAccepted ++; 
                         } 
-                        if(rows[i][11] == "Y"){ 
+                        if(rows[i][ENROLLED] == "Y"){ 
                             tEnrolled ++; 
                         }                     
-                        if(rows[i][10] == "CONF"){ 
+                        if(rows[i][CONFIRMED] == "CONF"){ 
                             tConfirmed ++; 
                         } 
                     } 
+
+                    //string with all the application info we need to display
+                    var temp = "Applied : "+tApplied+"<br>Accepted : " + tAccepted +
+                                "<br>Confirmed : " + tConfirmed + "<br>Enrolled : " + tEnrolled; 
                     
-                    var temp = "Applied : "+tApplied+"<br>Accepted : "+tAccepted+"<br>Confirmed : "+ tConfirmed+"<br>Enrolled : "+ tEnrolled; 
-                    
-					//make the column name more human readable for printing
-					if(column != "HighSchoolCode"){
-						column = column.substring(2)//rip of HS
-					}
-					else{
-						column = "High School Code";
-					}
-					utilities.getRightSidebarElement().innerHTML ="Searched by " + column + " : " + origVal +"<br>" + temp; 
-                } 
+                    utilities.getRightSidebarElement().innerHTML ="Searched by " + search + " : " + term +"<br>" + temp; 
+                }
+                else{
+                     utilities.getRightSidebarElement().innerHTML = "Cannot find data for " + search + ": " + term + ".";
+                }
             } 
         } 
-        utilities.sendRequest(url, handleResponse2); 
-    }; 
+    };
+
+
+    //these should go at the top when we move over files
+    var APP_TABLE_ID = '1w-D42ugHUlbWRt_s4NFUDkB7NURvYQQoB55dSW8';
+    var APPLIED = 8;
+    var ACCEPTED = 9;
+    var CONFIRMED = 10;
+    var ENROLLED = 11;
 	
 	
 	
