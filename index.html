@@ -28,102 +28,104 @@
 								<input type="button" id="lookupButton" value="Lookup">
 							</p>
 							<div id="filter_section">
-							<h3>Filter By:</h3>
-							<table>
-								<tr>
-									<td>
-							<input type="radio" name=filter value="none" checked>
-							None
-								</td>
+								<h3>Filter By:</h3>
+								<table>
+									<tr>
+										<td>
+											<input type="radio" name=filter value="none" checked>
+											None
+										</td>
 									</tr>
-							<br/>
-								<tr>
-									<td>
-							<input type="radio" name="filter" value="gpa">
-							GPA
-								</td><td>
-							<input type="text" name="GPA_input" class="range" value="0.0">
-							-
-							<input type="text" name="GPA_input" class="range" value ="4.0">
-								</td>
+									<tr>
+										<td>
+											<input type="radio" name="filter" value="gpa">
+											GPA
+										</td>
+										<td>
+											<input type="text" name="GPA_input" class="range" value="0.0">
+											-
+											<input type="text" name="GPA_input" class="range" value ="4.0">
+										</td>
 									</tr>
-								<tr>
-									<td>
-							<input type="radio" name=filter value="gender">
-							Gender
-								</td><td>
-							<select name="gender_select">
-							<option value="male">Male</option>
-							<option value="female">Female</option>
-							</select>
-									</td>
+									<tr>
+										<td>
+											<input type="radio" name=filter value="gender">
+											Gender
+										</td>
+										<td>
+											<select name="gender_select">
+												<option value="male">Male</option>
+												<option value="female">Female</option>
+											</select>
+										</td>
 									</tr>
-								<tr>
-									<td>
-							<input type="radio" name=filter value="major">
-							Major
-								</td><td>
-							<select name="major_select" style="width: 150px">
-							<option value="cs">Computer Science</option>
-							<option value="mth">Mathematics</option>
-							</select>
-									</td>
+									<tr>
+										<td>
+											<input type="radio" name=filter value="major">
+											Major
+										</td>
+										<td>
+											<select name="major_select" style="width: 150px">
+												<option value="cs">Computer Science</option>
+												<option value="mth">Mathematics</option>
+											</select>
+										</td>
 									</tr>
 								</table>
-							<table>
+								<table>
 									<CAPTION><EM>SAT Scores:</EM></CAPTION>
 									<tr>
 										<td>
-								<input type="radio" name=filter value="total">
-								Total
-									</td><td>
-								<input type="text" align="LEFT" name="SAT_input" class="range" value="0">
-								-
-								<input type="text" name="SAT_input" class="range" value="1600">
-									</td>
+											<input type="radio" name=filter value="total">
+											Total
+										</td>
+										<td>
+											<input type="text" align="LEFT" name="SAT_input" class="range" value="0">
+											-
+											<input type="text" name="SAT_input" class="range" value="1600">
+										</td>
 									</tr>
 									<tr>
 										<td>
-								<input type="radio" name=filter value="reading">
-								Reading
-									</td><td>
-								<input type="text" name="SAT-r_input" class="range" value="0">
-								-
-								<input type="text" name="SAT-r_input" class="range" value="800">
-									</td>
-										</tr>
+											<input type="radio" name=filter value="reading">
+											Reading
+										</td>
+										<td>
+											<input type="text" name="SAT-r_input" class="range" value="0">
+											-
+											<input type="text" name="SAT-r_input" class="range" value="800">
+										</td>
+									</tr>
 									<tr>
 										<td>
-								<input type="radio" name=filter value="math">
-								Math
-									</td><td>
-								<input type="text" name="SAT-m_input" class="range" value="0">
-								-
-								<input type="text" name="SAT-m_input" class="range" value ="800">
-									</td>
-										</tr>
-									</table>
+											<input type="radio" name=filter value="math">
+											Math
+										</td>
+										<td>
+											<input type="text" name="SAT-m_input" class="range" value="0">
+											-
+											<input type="text" name="SAT-m_input" class="range" value ="800">
+										</td>
+									</tr>
+								</table>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class = "side_by_side">
-					<div id="contig_us_map_canvas"></div>
-					<div id="display_box">
-						<div class = "stacked">
-							<div id = "right_display"></div>
-						</div>
-
+			<div class = "side_by_side">
+				<div id="contig_us_map_canvas"></div>
+				<div id="display_box">
+					<div class = "stacked">
+						<div id = "right_display"></div>
 					</div>
-
 				</div>
-				<div class="side_by_side" id="top_schools">
-					<h3>Top Schools</h3>
-				</div>
-
 			</div>
-			<div id="panels"></div>
+			<div class="side_by_side" id="top_schools">
+				<h3>Top Schools</h3>
+			</div>
 		</div>
+		<div id="panels"></div>
+	</div>
 
 		<!--
 		The following script tag utilizes RequireJS to perform AMD loading of
