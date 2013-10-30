@@ -163,17 +163,16 @@ define([], function(){
 
 
     /*
-     * getRightSidebarElement()
+     * getInfoBoxElement()
      *
-     * This function gets the right sidebar element from the page.
+     * This function gets the info box element from the page.
      *
      * @param void
      * @return The handle of the html element.
      */
-    var getRightSidebarElement = function() {
+    var getInfoBoxElement = function() {
 
-        var els = document.getElementsByClassName("stacked");
-        return els[1];
+        return document.getElementById("right_display");
     };
 
 
@@ -261,7 +260,7 @@ define([], function(){
                  getSearchTerm : getSearchTerm,
                  getSearchType : getSearchType,
                  getErrorMsgElement : getErrorMsgElement,
-                 getRightSidebarElement : getRightSidebarElement,
+                 getInfoBoxElement : getInfoBoxElement,
                  makeRequestor : makeRequestor,
                  sendRequest : sendRequest,    
                  tables : tables

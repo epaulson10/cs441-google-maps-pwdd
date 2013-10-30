@@ -31,17 +31,15 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
     var lookup = function(layerArray, geocoder) {
 
         // Get search type
-        var stype = utilities.getSearchType();
+        var sType = utilities.getSearchType();
 
         // Get the search term from the page, as entered by the user.
-        var sterm = utilities.getSearchTerm();
+        var sTerm = utilities.getSearchTerm();
 
         // Did the user type anything?
-        if(sterm == "") {
-
+        if(sTerm == "") {
             // Give an error message to the user:
             utilities.getErrorMsgElement().innerHTML = "Error: Please enter something to search for";
-
         } else {
 
             // Clear any error message.
@@ -58,12 +56,12 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
             // Create a url for
             // a subsequent GET request to a Google server.
             var term;
-            if (stype != admissions.ZIP && stype != admissions.CEEB) {
-                term = "'" + sterm + "'";
+            if (sType != admissions.ZIP && sType != admissions.CEEB) {
+                term = "'" + sTerm + "'";
             } else {
-                term = sterm;
+                term = sTerm;
             }
-            var query = "SELECT * FROM " + layerArray[0].eID + " WHERE " + stype + " = " + term;
+            var query = "SELECT * FROM " + layerArray[0].eID + " WHERE " + sType + " = " + term;
 
             var url = "https://www.googleapis.com/fusiontables/v1/query";
             url = url + "?sql=" + query;
@@ -80,7 +78,7 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
                         console.log(response);
                         if(response["rows"] != undefined) {
                             // Set the zoom.
-                            var zoomLvl = getZoomLevel(stype);
+                            var zoomLvl = getZoomLevel(sType);
                             layerArray[0].map.setZoom(zoomLvl);
 
                             var hsName = admissions.getHighSchoolName(response);
@@ -88,11 +86,11 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
                             var zipcode = admissions.getZipcode(response);
                             var city = admissions.getCity(response);
                             var state = admissions.getState(response);
-							var ceeb = admissions.getCEEB(response);
+			    var ceeb = admissions.getCEEB(response);
 
                             // Center the map.
                             var center;
-                            switch(stype) {
+                            switch(sType) {
                                 case admissions.CEEB:
                                 case admissions.HSNAME:
                                     center = hsAddress;
@@ -110,15 +108,16 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
                             centerAt(layerArray[0].map, center, geocoder);
 
                             // Filter the layer to display only the desired schools
-                            layers.filterBy.call(layerArray[0], stype, sterm);
+                            layers.filterBy.call(layerArray[0], sType, sTerm);
                             
                             //have only 1 requestor, so have to link requests
-                            calculate.getAppInfo(stype, sterm, null,ceeb);
+                            utilities.getInfoBoxElement().innerHTML = 'Calculating...';
+                            calculate.getAppInfo(sType, sTerm, null, ceeb);
 
                         } else {
                             // Indicate to the user their search term was not found 
                             //TODO: figure out why getErrorElement doesn't work
-                            utilities.getRightSidebarElement().innerHTML = "Cannot locate " + stype + ": " + sterm + ".";
+                            utilities.getInfoBoxElement().innerHTML = "Cannot locate " + sType + ": " + sTerm + ".";
                         }
 
                     }
@@ -138,15 +137,15 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
      * Given a search type, return the appropriate zoom level to 
      * best display the data on the map.
      *
-     * @param stype A search type, such as "ceeb" or "state"
+     * @param sType A search type, such as "ceeb" or "state"
      * @return An integer zoom level
      *
      */
-    var getZoomLevel = function(stype) {
+    var getZoomLevel = function(sType) {
 
         var zoom;
 
-        switch(stype) {
+        switch(sType) {
             case admissions.ZIP:
             case admissions.CEEB:
             case admissions.HSNAME:

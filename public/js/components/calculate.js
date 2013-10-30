@@ -1,5 +1,5 @@
 define(['./utilities','./admissions'], function(utilities, admissions) {
-	
+    
     //constants
     var APP_TABLE_ID = '1w-D42ugHUlbWRt_s4NFUDkB7NURvYQQoB55dSW8';
     var APPLIED = 8;
@@ -11,13 +11,13 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
      *  convertColumn()
      *
      *  Converts between the column names in the fusion table that displays 
-	 *  information on the map and the one that adds up all the
-	 *  applicant info.
+     *  information on the map and the one that adds up all the
+     *  applicant info.
      *
      *  @param input The column name in the HS Geo info fusion table
      *  @return Column name in applicant info fusion table
      */
-	var convertColumn = function(input){ 
+    var convertColumn = function(input){ 
         switch(input) { 
             case admissions.ZIP: 
                 input = "HSZip"; 
@@ -37,13 +37,13 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
         } 
         return input; 
     }; 
-	
-	
-	/*
+    
+    
+    /*
      *  getAppInfo()
      *
      *  Find the total number of studends that have enrolled, applied,
-	 *  been accepted, and confirmed.
+     *  been accepted, and confirmed.
      *
      *  @param column The column the user is searching by
      *  @param value What was in the text box
@@ -55,24 +55,24 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
         column = convertColumn(column);
 
         //set defaults for variables
-		var match = " CONTAINS IGNORING CASE ";
-		var firstHS = "";
-		
-		//need to deal with integer and string matches
-		if(column == "HighSchoolCode" || column == "HSZip"){
-			match = " = ";
-		}
-		else{
+        var match = " CONTAINS IGNORING CASE ";
+        var firstHS = "";
+        
+        //need to deal with integer and string matches
+        if(column == "HighSchoolCode" || column == "HSZip"){
+            match = " = ";
+        }
+        else{
             //silly fusion table query needs '' around term
-			value = "'"+value+"'"; 
-			
-			//only want to get data for the HS we zoom in on
-			if(column == "HSName" && ceeb != undefined){
-				firstHS = " AND HighSchoolCode = " + ceeb;
-			}
-		}
-		
-		//create URL for request
+            value = "'"+value+"'"; 
+            
+            //only want to get data for the HS we zoom in on
+            if(column == "HSName" && ceeb != undefined){
+                firstHS = " AND HighSchoolCode = " + ceeb;
+            }
+        }
+        
+        //create URL for request
         var url = "https://www.googleapis.com/fusiontables/v1/query?sql="; 
         url += "SELECT * FROM " + APP_TABLE_ID; 
         url += " WHERE " + column + match + value + firstHS; 
@@ -122,17 +122,17 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
                     var temp = "Applied : "+tApplied+"<br>Accepted : " + tAccepted +
                                 "<br>Confirmed : " + tConfirmed + "<br>Enrolled : " + tEnrolled; 
                     
-                    utilities.getRightSidebarElement().innerHTML ="Searched by " + search + " : " + term +"<br><br>" + temp; 
+                    utilities.getInfoBoxElement().innerHTML ="Searched by " + search + " : " + term +"<br><br>" + temp; 
                 }
                 else{
-                     utilities.getRightSidebarElement().innerHTML = "Cannot find data for " + search + ": " + term + ".";
+                     utilities.getInfoBoxElement().innerHTML = "Cannot find data for " + search + ": " + term + ".";
                 }
             } 
         } 
     };
-	
-	
-	return {
+    
+    
+    return {
         getAppInfo : getAppInfo
     };
 });
