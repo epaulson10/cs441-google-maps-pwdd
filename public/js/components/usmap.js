@@ -7,27 +7,27 @@
  *  3. Grab values of HTML elements for other parts of the application.
  *
  *  @author Tanya L. Crenshaw
+ *  @version 10/30/13.  Fixed formatting. Changes made by Kyle, Nick, and Erik
  */
 
-define(['./utilities', './filterMenu', './admissions', './layers', './calculate'], function(utilities, filterMenu, admissions, layers, calculate) {
+define(['./utilities', './admissions', './layers', './calculate'], function(utilities, admissions, layers, calculate) {
 
-    /*
-     *  lookup()
-     *
-     *  For an array of layers, this function filters the layers
-     *  according to the CEEB grabbed from the page (that is,
-     *     entered by the user) and recenters the layer's map at the zipcode
-     *  associated with the given CEEB.
-     *
-     *  This function assumes that all the layers are on the same map.
-     *  Thus, when resetting the zoom and recentering the map, these
-     *  operations are done only once on the first layer.
-     *
-     *  @param layerArray An array of Google FusionTableLayers.
-     *  @param geocoder The geocoder service to use to recenter the map.
-     *  @return void
-     */
-
+  /**
+    *  lookup()
+    *
+    *  For an array of layers, this function filters the layers
+    *  according to the CEEB grabbed from the page (that is,
+    *     entered by the user) and recenters the layer's map at the zipcode
+    *  associated with the given CEEB.
+    *
+    *  This function assumes that all the layers are on the same map.
+    *  Thus, when resetting the zoom and recentering the map, these
+    *  operations are done only once on the first layer.
+    *
+    *  @param layerArray An array of Google FusionTableLayers.
+    *  @param geocoder The geocoder service to use to recenter the map.
+    *  @return void
+    */
     var lookup = function(layerArray, geocoder) {
 
         // Get search type
@@ -45,13 +45,7 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
             // Clear any error message.
             utilities.getErrorMsgElement().innerHTML = "";
 
-            // Get the corresponding zipcode for this CEEB.  The zipcode for this
-            // CEEB is contained in the same row as the CEEB in the Google Fusion
-            // tables.  So, I need to get the Zip in the row whose 'Code' is
-            // the CEEB entered by the user.  This is done using the GET API
-            // specified in the Google Fusion Tables Developer documentation.
-
-            // Actually, just get all the information for a given search term.
+            // Get all the information for a given search term.
 
             // Create a url for
             // a subsequent GET request to a Google server.
@@ -86,7 +80,7 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
                             var zipcode = admissions.getZipcode(response);
                             var city = admissions.getCity(response);
                             var state = admissions.getState(response);
-			    var ceeb = admissions.getCEEB(response);
+                            var ceeb = admissions.getCEEB(response);
 
                             // Center the map.
                             var center;
@@ -130,17 +124,16 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
         utilities.sendRequest(url, handleResponse);
     };
 
-
-    /*
-     * getZoomLevel()
-     * 
-     * Given a search type, return the appropriate zoom level to 
-     * best display the data on the map.
-     *
-     * @param sType A search type, such as "ceeb" or "state"
-     * @return An integer zoom level
-     *
-     */
+  /**
+    * getZoomLevel()
+    * 
+    * Given a search type, return the appropriate zoom level to 
+    * best display the data on the map.
+    *
+    * @param sType A search type, such as "ceeb" or "state"
+    * @return An integer zoom level
+    *
+    */
     var getZoomLevel = function(sType) {
 
         var zoom;
@@ -164,32 +157,31 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
         return zoom;
     }
 
-
-    /*
-     *  centerAt()
-     *
-     *    Given an address, use the Google geocode service to obtain the
-     *  latitude and longitude points for that address and center the
-     *  window object's 'map' at the lat/lon point provided.
-     *
-     *  Note that the Google geocoder service is an asynchronous call,
-     *  so an anonymous callback function is used to handle the result.
-     *  Otherwise, the page will hang.
-     *
-     *  Based largely on the geocode sample provided in the Google Developer
-     *  documentation for Google Maps API 3 for Javascript.
-     *
-     *  @param address A string representing an address, such as "Chicago"
-     *  or "92171"
-     *
-     *  @return void
-     * */
+  /**
+    *  centerAt()
+    *
+    *    Given an address, use the Google geocode service to obtain the
+    *  latitude and longitude points for that address and center the
+    *  window object's 'map' at the lat/lon point provided.
+    *
+    *  Note that the Google geocoder service is an asynchronous call,
+    *  so an anonymous callback function is used to handle the result.
+    *  Otherwise, the page will hang.
+    *
+    *  Based largely on the geocode sample provided in the Google Developer
+    *  documentation for Google Maps API 3 for Javascript.
+    *
+    *  @param address A string representing an address, such as "Chicago"
+    *  or "92171"
+    *
+    *  @return void
+    */
     var centerAt = function(map, address, geocoder) {
 
         geocoder.geocode({
             'address' : address
         }, function(results, status) {
-            if(status == google.maps.GeocoderStatus.OK) {
+            if (status == google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);
             } else {
                 alert("Geocode was not successful for the following reason: " + status);
@@ -197,46 +189,17 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
         });
     };
 
-
-    /*
-     *  regionalize()
-     *
-     *  This function filters an array of layer objects based on the
-     *  region name grabbed from the page (that is, entered by the user)
-     *  and recenters the map at the region.
-     *
-     *  @param layerArray An array of Layer objects to regionalize.
-     *  @param geocoder The geocoder service to use to recenter the map.
-     *  @return void
-     */
-    var regionalize = function(layerArray, geocoder) {
-
-        // Get the region name from the page, as entered by the user.
-        var region = utilities.getRegion();
-
-        // Filter each layer by the region.
-        utilities.forEach(layerArray, function(t) {
-            layers.filterByRegion.call(t, region);
-        });
-        // Set the zoom.
-        layerArray[0].map.setZoom(6);
-
-        // Center the map at the state corresponding to the region.
-        centerAt(layerArray[0].map, admissions.convertRegionToState(region), geocoder);
-    };
-
-
-    /*
-     *  initialize()
-     *
-     *  A function to:
-     *  1. create a google map centered at the us
-     *  2. Initialize one layer object, for high schools.
-     *  3. instantiate a google maps geocoder service.
-     *
-     *  @param void
-     *  @return void
-     */
+  /**
+    *  initialize()
+    *
+    *  A function to:
+    *  1. create a google map centered at the us
+    *  2. Initialize one layer object, for high schools.
+    *  3. instantiate a google maps geocoder service.
+    *
+    *  @param void
+    *  @return void
+    */
     var initialize = function() {
 
         // Set the Google API key for this namespace.
@@ -289,11 +252,9 @@ define(['./utilities', './filterMenu', './admissions', './layers', './calculate'
     // functions by RequireJS, and accessible through the namespace that
     // is attached to this module when loaded in other files.
     return {
-
         lookup : lookup,
         getZoomLevel : getZoomLevel,
         centerAt : centerAt,
-        regionalize : regionalize,
         initialize : initialize
     };
 });

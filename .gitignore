@@ -9,6 +9,7 @@
 *.shp.xml
 *.shx
 *.swp
+*.swo 
 adminData/*.csv
 adminData/auto/
 adminData/.R*

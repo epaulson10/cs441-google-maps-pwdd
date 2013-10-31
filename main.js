@@ -25,10 +25,8 @@ require.config({
     paths: {
         'jquery':'vendor/jquery-2.0.3',
         'utilities':'components/utilities',
-        'filterMenu':'components/filterMenus',
         'admissions':'components/admissions',
         'layers':'components/layers',
-        'census':'components/census',
         'usmap':'components/usmap',
         'calculate' : 'components/calculate'
     }
@@ -51,13 +49,11 @@ require.config({
 require([
     'jquery',
     'utilities',
-    'filterMenu',
     'admissions',
     'layers',
-    'census',
     'usmap',
     'calculate'
-], function($,utilities,filterMenu,admissions,layers,census,usmap,calculate) {
+], function($,utilities,admissions,layers,usmap,calculate) {
 //], function($, util, usmap) {
 
         // Note that the order of definition is VERY important. In the closure

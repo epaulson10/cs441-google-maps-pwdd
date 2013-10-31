@@ -52,7 +52,7 @@ select {
 #filter {
    display: inline-block;
 }
-#right_menu_bar {
+#left_menu_bar {
 	width: 280px;
 	height: 600px;
 	background: #d6dee9

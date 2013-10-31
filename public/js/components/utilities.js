@@ -5,27 +5,28 @@
  * application.
  *
  * @author Tanya L. Crenshaw, Fernando Freire
+ * @version 10/30/13.  Fixed formatting. Changes made by Kyle, Nick, and Erik
  */
 
 define([], function(){
 
-    /*
-     * addEvent()
-     *
-     * A utility function adapted from Google Code university to
-     * simplify the browser-dependent act of adding events to
-     * html elements.  Given an element, an event, and a function
-     * this function checks the browser capability, and uses the
-     * correct "add listener" or "attach event" function to
-     * bind the function to the event for the element.
-     *
-     * @param el The html element.
-     * @param evt A string representing the event.  e.g. 'click'
-     * @param fn The function that will be invoked when the given
-     * event 'evt' is experienced by the given element 'el'.
-     *
-     * @return void
-     */
+  /**
+    * addEvent()
+    *
+    * A utility function adapted from Google Code university to
+    * simplify the browser-dependent act of adding events to
+    * html elements.  Given an element, an event, and a function
+    * this function checks the browser capability, and uses the
+    * correct "add listener" or "attach event" function to
+    * bind the function to the event for the element.
+    *
+    * @param el The html element.
+    * @param evt A string representing the event.  e.g. 'click'
+    * @param fn The function that will be invoked when the given
+    * event 'evt' is experienced by the given element 'el'.
+    *
+    * @return void
+    */
     var addEvent = function(el, evt, fn) {
         if(el.addEventListener) {
             el.addEventListener(evt, fn, false);
@@ -34,19 +35,18 @@ define([], function(){
         }
     };
 
-
-    /*
-     * forEach()
-     *
-     * A utility function adopted from "Eloquent JavaScript" that
-     * accepts an action and applies that action to each element in
-     * an array.  This helps to abstract the tedium of for-loops.
-     *
-     * @param array The array of elements to operate upon.
-     * @param action The action to perform on each element.
-     *
-     * @return void
-     */
+  /**
+    * forEach()
+    *
+    * A utility function adopted from "Eloquent JavaScript" that
+    * accepts an action and applies that action to each element in
+    * an array.  This helps to abstract the tedium of for-loops.
+    *
+    * @param array The array of elements to operate upon.
+    * @param action The action to perform on each element.
+    *
+    * @return void
+    */
     var forEach = function(array, action) {
 
         for(var i = 0; i < array.length; i++) {
@@ -55,21 +55,20 @@ define([], function(){
 
     };
 
-
-    /*
-     *  makeRequestor()
-     *
-     *  This function makes an object to make http requests.
-     *
-     *  This function is adapted from:
-     *    https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started
-     *
-     *  This application calls this function only once; it uses only
-     *  one httpRequest object to send all subsequent GET requests.
-     *
-     *  @param void
-     *  @return void
-     */
+  /**
+    *  makeRequestor()
+    *
+    *  This function makes an object to make http requests.
+    *
+    *  This function is adapted from:
+    *    https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started
+    *
+    *  This application calls this function only once; it uses only
+    *  one httpRequest object to send all subsequent GET requests.
+    *
+    *  @param void
+    *  @return void
+    */
     var makeRequestor = function() {
 
         if(window.XMLHttpRequest) {// Mozilla, Safari, ...
@@ -91,23 +90,21 @@ define([], function(){
         }
     };
 
-
-    /*
-     *  sendRequest()
-     *
-     *  This function utlizes the namespace's httpRequest object to make
-     *  http requests.  It sets up the httpRequest onreadystatechange
-     *  property to be the response function passed to this function.
-     *
-     *  This function is adapted from:
-     *    https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started
-     *
-     *  @param url The well-formed url representing the http request.
-     *  @param response The function describing the behavior that should
-     *         occur after the httpRequest object gets a response.
-     *  @return void
-     */
-
+  /**
+    *  sendRequest()
+    *
+    *  This function utlizes the namespace's httpRequest object to make
+    *  http requests.  It sets up the httpRequest onreadystatechange
+    *  property to be the response function passed to this function.
+    *
+    *  This function is adapted from:
+    *    https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started
+    *
+    *  @param url The well-formed url representing the http request.
+    *  @param response The function describing the behavior that should
+    *         occur after the httpRequest object gets a response.
+    *  @return void
+    */
     var sendRequest = function(url, response) {
 
         httpRequest.onreadystatechange = response;
@@ -116,89 +113,86 @@ define([], function(){
 
     }
 
-    
-    /*
-     * getSearchTerm()
-     *
-     * This function gets the search term from the page, as entered by
-     * the user in the input textbox with id "search_term".
-     *
-     * @param void
-     * @return The value of the html element with id "search_term"
-     */
+  /**
+    * getSearchTerm()
+    *
+    * This function gets the search term from the page, as entered by
+    * the user in the input textbox with id "search_term".
+    *
+    * @param void
+    * @return The value of the html element with id "search_term"
+    */
     var getSearchTerm = function() {
 
         return document.getElementById("search_term").value;
     };
 
-
-    /*
-     * getSearchType()
-     * 
-     * This function gets the search type from the page, as chosen in
-     * the select element with id "search_type".
-     * 
-     * @param void
-     * @return The value of the html element with id "search_type"
-     */
+  /**
+    * getSearchType()
+    * 
+    * This function gets the search type from the page, as chosen in
+    * the select element with id "search_type".
+    * 
+    * @param void
+    * @return The value of the html element with id "search_type"
+    */
     var getSearchType = function() {
         
         return document.getElementById("search_type").value;
     }
 
-
-    /*
-     * getErrorMsgElement()
-     *
-     * This function gets the element from the page where error messages
-     * should be placed.
-     *
-     * @param void
-     * @return The html element with id "errormessage"
-     */
+  /**
+    * getErrorMsgElement()
+    *
+    * This function gets the element from the page where error messages
+    * should be placed.
+    *
+    * @param void
+    * @return The html element with id "errormessage"
+    */
     var getErrorMsgElement = function() {
 
         return document.getElementById("errormessage");
     };
 
 
-    /*
-     * getInfoBoxElement()
-     *
-     * This function gets the info box element from the page.
-     *
-     * @param void
-     * @return The handle of the html element.
-     */
+  /**
+    * getInfoBoxElement()
+    *
+    * This function gets the info box element from the page.
+    *
+    * @param void
+    * @return The handle of the html element.
+    */
     var getInfoBoxElement = function() {
 
         return document.getElementById("right_display");
     };
 
 
-    /*
-     * Encrypted IDs for all of the data graciously scraped
-     * and converted by the CS441 students, organized
-     * by layer and then by state.
-     *
-     * Despite the assignment, some teams did not organize
-     * by state.  See instances of "Set1" and "Set2" for examples.
-     *
-     * Each table has an owner listed.  If you are having problems with a
-     * table, contact the owner.
-     *
-     * Each table has been tested within the current cs441
-     * example source.  If a table is marked as "Working"
-     * that means that it displays the state's data when
-     * filtered by the regionFilterMenu.
-     *
-     * If you want to access a particular table via the Google web interface,
-     * just concatenate the particular encrypted id to this url:
-     * 
-     * https://www.google.com/fusiontables/data?docid=
-     *
-     *
-     */
+  /**
+    * Encrypted IDs for all of the data graciously scraped
+    * and converted by the CS441 students, organized
+    * by layer and then by state.
+    *
+    * Despite the assignment, some teams did not organize
+    * by state.  See instances of "Set1" and "Set2" for examples.
+    *
+    * Each table has an owner listed.  If you are having problems with a
+    * table, contact the owner.
+    *
+    * Each table has been tested within the current cs441
+    * example source.  If a table is marked as "Working"
+    * that means that it displays the state's data when
+    * filtered by the regionFilterMenu.
+    *
+    * If you want to access a particular table via the Google web interface,
+    * just concatenate the particular encrypted id to this url:
+    * 
+    * https://www.google.com/fusiontables/data?docid=
+    *
+    *
+    */
 
     /* As of 10/29, I was having trouble uploading all of Gadbois' tables.  This may be a personal problem with my machine
      * or it may be Google is having trouble with traffic.  I was able to go to the web interface for the tables, tho.
@@ -256,13 +250,13 @@ define([], function(){
     // is attached to this module when loaded in other files.
     return {
         addEvent : addEvent,
-                 forEach : forEach,
-                 getSearchTerm : getSearchTerm,
-                 getSearchType : getSearchType,
-                 getErrorMsgElement : getErrorMsgElement,
-                 getInfoBoxElement : getInfoBoxElement,
-                 makeRequestor : makeRequestor,
-                 sendRequest : sendRequest,    
-                 tables : tables
+        forEach : forEach,
+        getSearchTerm : getSearchTerm,
+        getSearchType : getSearchType,
+        getErrorMsgElement : getErrorMsgElement,
+        getInfoBoxElement : getInfoBoxElement,
+        makeRequestor : makeRequestor,
+        sendRequest : sendRequest,    
+        tables : tables
     };
 });

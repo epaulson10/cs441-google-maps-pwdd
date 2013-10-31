@@ -1,28 +1,39 @@
 ********************************
-cs441GoogleMapsViz README.txt
-Written by Tanya L. Crenshaw
-Sept 15, 2013
+cs441GoogleMapsPwdd README.txt
+Written by Erik Paulson, Kyle DeFrancia, Joey Devlin, Nicholas Warlen
+Oct 31, 2013
 ********************************
 
-This publically available code is a working sample of how one might use 
-Google Maps and Google Fusion Tables to visualize a variety of admissions 
-data as well as more generic data such as high school addresses, zip codes, 
-and CEEBs.
+1.0 Introduction
 
-In order for this code to work, you must supply an API key. This API key is
-used when making requests of Google's servers; Google wants to make sure 
-nobody is over-using the Google services without paying for them.
+Critical to the University of Portland’s standing is the admissions team, whose task 
+is to recruit quality students for the university. These individuals use admissions 
+data gathered from applicants to determine where to concentrate their recruiting efforts. 
+Until now, the admissions team has used spreadsheets to analyze their data. However, that 
+method is clunky and overwhelming. This project seeks to improve this process by creating 
+a web application that visualizes admissions data on a map in an understandable and 
+convenient format.
 
-1. To get an API key, you must register yourself and your web development 
-project.  Visit: 
 
-https://code.google.com/apis/console/
+2.0 How To Use
+To use the Data Visualization Tool, use the following steps:
 
-2. Once you have your API key, locate the following code in usmap.js:
+1. Open index.html (located in the same directory as this readme file).
+2. In the top-left dropdown, choose the type of region you want to see admissions information
+   about (state, city, zip code, high school or CEEB).
+3. Type into the text field, next to the "Search By" dropdown, what you want to search
+   for.
+   The formats for the search types are as follows:
+      -State: Two letter capital abbreviation. E.g. OR
+      -City: City name. E.g. Portland
+      -Zip: 5 digit number. E.g. 97267
+      -CEEB: The full CEEB code for a high school. E.g. 380000
+      -High School: A high school name. E.g. Burns High School
+4. Press "Lookup" button.
+5. ???
+6. Profit
 
-cs441GoogleMapsViz.initialize = function() {
 
-	// Set the Google API key for this namespace.
-	cs441GoogleMapsViz.apikey = 'Your API Key Here';
-	
-And paste in your API key.
+3.0 Acknowledgements
+Based on code written by Dr. Tanya Crenshaw. Her code can be found at:
+https://code.google.com/p/cs441-google-maps-viz/
