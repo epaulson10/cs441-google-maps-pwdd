@@ -11,7 +11,7 @@
 define(['./utilities','./admissions'], function(utilities, admissions) {
     
     //constants
-    var APP_TABLE_ID = '1w-D42ugHUlbWRt_s4NFUDkB7NURvYQQoB55dSW8';
+    var APP_TABLE_ID = '1Dk_XmYIioHO9jltVtLzZuYR66BxkL-si8Wu7B8A';
     var APPLIED = 8;
     var ACCEPTED = 9;
     var CONFIRMED = 10;

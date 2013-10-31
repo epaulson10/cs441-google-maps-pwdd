@@ -210,7 +210,7 @@ define(['./utilities', './admissions', './layers', './calculate'], function(util
 
         // Encrypted IDs for the Google Fusion Table containing the
         // Oregon high school and CEEB data.
-        var schoolEID = '1TysRKf1siV396AMbUKmi8w2-XB3Zeye2ObXjl8Y';
+        var schoolEID = '1y9pTnSxKL59dkZOtdUZSvkJ67loQLaKQh3wWrNc';
 
         // Instatiate a new geocoder service
         var geocoder = new google.maps.Geocoder();
