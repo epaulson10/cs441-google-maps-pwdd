@@ -7,6 +7,7 @@
  *
  *  @author Tanya L. Crenshaw
  *  @version 10/30/13.  Fixed formatting. Changes made by Kyle, Nick, and Erik
+ *  @version 11/3/13.   Edited to allow for filtering by strings or numbers. Joe and Kyle
  */
 
 define(['./admissions', './utilities'], function(admissions, utilities) {
@@ -69,6 +70,7 @@ define(['./admissions', './utilities'], function(admissions, utilities) {
             // Indicate that the layer is filtered
             this.filtered = true;
         }
+        console.log("predicate" + predicate);
     }
 
   /**
@@ -84,10 +86,17 @@ define(['./admissions', './utilities'], function(admissions, utilities) {
     * @param sterm Search term by which to filter.
     *
     */
-    var filterBy = function(stype, sterm) {
-
-        console.log('Im in filterBy. type = ' + stype + ' term = ' + sterm);
-        var filter = '' + stype + ' = ' + sterm;
+    var filterBy = function(stype, sterm, eq) {
+        console.log('Im in filterBy. type = ' + stype + ' term = ' + sterm + 'eq' + eq);
+        var filter;
+        //handles number based queries
+        if(eq.match(/=/)){
+            filter = '' + stype + ' = ' + sterm;
+        }
+        //handles number based queries
+        else{
+            filter = stype + " CONTAINS IGNORING CASE " + "'" + sterm + "'";
+        }
         this.applyFilter(null, null, filter);
     }
 

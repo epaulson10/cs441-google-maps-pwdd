@@ -8,6 +8,7 @@
  *
  *  @author Tanya L. Crenshaw
  *  @version 10/30/13.  Fixed formatting. Changes made by Kyle, Nick, and Erik
+ *  @version 11/3/13. Updated fusion table ID and edited fusion table query.  Joe Devlin
  */
 
 define(['./utilities', './admissions', './layers', './calculate'], function(utilities, admissions, layers, calculate) {
@@ -50,17 +51,20 @@ define(['./utilities', './admissions', './layers', './calculate'], function(util
             // Create a url for
             // a subsequent GET request to a Google server.
             var term;
+            var eq;
             if (sType != admissions.ZIP && sType != admissions.CEEB) {
                 term = "'" + sTerm + "'";
+                eq = ' CONTAINS IGNORING CASE ';
             } else {
                 term = sTerm;
+                eq = ' = ';
             }
-            var query = "SELECT * FROM " + layerArray[0].eID + " WHERE " + sType + " = " + term;
-
+            var query = "SELECT * FROM " + layerArray[0].eID + " WHERE " + sType + eq + term;
+        
             var url = "https://www.googleapis.com/fusiontables/v1/query";
             url = url + "?sql=" + query;
-            url = url + " &key=" + apikey;
-
+            url = url + "&key=" + apikey;
+            console.log(url);
             function handleResponse() {
                 if(httpRequest.readyState === 4) {
                     if(httpRequest.status === 200) {
@@ -99,10 +103,12 @@ define(['./utilities', './admissions', './layers', './calculate'], function(util
                                     center = city + " " + state;
                                     break;
                             }
+                            center = center + " , United States of America";
+                            console.log(center);
                             centerAt(layerArray[0].map, center, geocoder);
 
                             // Filter the layer to display only the desired schools
-                            layers.filterBy.call(layerArray[0], sType, sTerm);
+                            layers.filterBy.call(layerArray[0], sType, sTerm, eq);
                             
                             //have only 1 requestor, so have to link requests
                             utilities.getInfoBoxElement().innerHTML = 'Calculating...';
@@ -210,7 +216,7 @@ define(['./utilities', './admissions', './layers', './calculate'], function(util
 
         // Encrypted IDs for the Google Fusion Table containing the
         // Oregon high school and CEEB data.
-        var schoolEID = '1y9pTnSxKL59dkZOtdUZSvkJ67loQLaKQh3wWrNc';
+        var schoolEID = '1Mrzm5J87PQO5W8T-HraZCQvXF2KhF4rWDowphzo';
 
         // Instatiate a new geocoder service
         var geocoder = new google.maps.Geocoder();
