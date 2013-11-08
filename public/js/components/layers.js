@@ -82,8 +82,9 @@ define(['./admissions', './utilities'], function(admissions, utilities) {
     * For example, use this to display only schools where
     * Zip = 97203, or where State = OR, etc.
     *
-    * @param stype Search type
-    * @param sterm Search term by which to filter.
+    * @param sType Search type
+    * @param sTerm Search term by which to filter.
+    * @param eq equality comparison to be used
     *
     */
     var filterBy = function(stype, sterm, eq) {
