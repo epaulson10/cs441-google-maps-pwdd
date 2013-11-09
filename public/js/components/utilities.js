@@ -168,6 +168,19 @@ define([], function(){
 
         return document.getElementById("right_display");
     };
+	
+	/**
+    * getTopSchoolBar()
+    *
+    * This function gets the top school div located to the right of the map
+    *
+    * @param void
+    * @return The handle of the html element.
+    */
+    var getInfoBoxElement = function() {
+
+        return document.getElementById("top_schools");
+    };
 
 
   /**
