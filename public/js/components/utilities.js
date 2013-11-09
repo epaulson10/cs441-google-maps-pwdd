@@ -114,34 +114,6 @@ define([], function(){
     }
 
   /**
-    * getSearchTerm()
-    *
-    * This function gets the search term from the page, as entered by
-    * the user in the input textbox with id "search_term".
-    *
-    * @param void
-    * @return The value of the html element with id "search_term"
-    */
-    var getSearchTerm = function() {
-
-        return document.getElementById("search_term").value;
-    };
-
-  /**
-    * getSearchType()
-    * 
-    * This function gets the search type from the page, as chosen in
-    * the select element with id "search_type".
-    * 
-    * @param void
-    * @return The value of the html element with id "search_type"
-    */
-    var getSearchType = function() {
-        
-        return document.getElementById("search_type").value;
-    }
-
-  /**
     * getErrorMsgElement()
     *
     * This function gets the element from the page where error messages
@@ -168,7 +140,6 @@ define([], function(){
 
         return document.getElementById("right_display");
     };
-
 
   /**
     * Encrypted IDs for all of the data graciously scraped
@@ -251,8 +222,6 @@ define([], function(){
     return {
         addEvent : addEvent,
         forEach : forEach,
-        getSearchTerm : getSearchTerm,
-        getSearchType : getSearchType,
         getErrorMsgElement : getErrorMsgElement,
         getInfoBoxElement : getInfoBoxElement,
         makeRequestor : makeRequestor,

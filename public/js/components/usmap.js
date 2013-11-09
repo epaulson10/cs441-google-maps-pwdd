@@ -11,7 +11,7 @@
  *  @version 11/3/13. Updated fusion table ID and edited fusion table query.  Joe Devlin
  */
 
-define(['./utilities', './admissions', './layers', './calculate'], function(utilities, admissions, layers, calculate) {
+define(['./utilities', './admissions', './layers', './calculate', './form'], function(utilities, admissions, layers, calculate, form) {
 
   /**
     *  lookup()
@@ -32,10 +32,10 @@ define(['./utilities', './admissions', './layers', './calculate'], function(util
     var lookup = function(layerArray, geocoder) {
 
         // Get search type
-        var sType = utilities.getSearchType();
+        var sType = form.getSearchType();
 
         // Get the search term from the page, as entered by the user.
-        var sTerm = utilities.getSearchTerm();
+        var sTerm = form.getSearchTerm();
 
         // Did the user type anything?
         if(sTerm == "") {

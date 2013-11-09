@@ -8,7 +8,7 @@
  *  @version 10/30/13.  Fixed formatting. Changes made by Kyle, Nick, and Erik
  */
 
-define(['./utilities','./admissions'], function(utilities, admissions) {
+define(['./utilities','./admissions', './form'], function(utilities, admissions, form) {
     
     //constants
     var APP_TABLE_ID = '1Dk_XmYIioHO9jltVtLzZuYR66BxkL-si8Wu7B8A';
@@ -80,6 +80,8 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
                 firstHS = " AND HighSchoolCode = " + ceeb;
             }
         }
+
+        // apply the filter selected by the user
         
         //create URL for request
         var url = "https://www.googleapis.com/fusiontables/v1/query?sql="; 
@@ -102,8 +104,8 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
     * @return void
     */
     var appResponse = function(){ 
-        var search = utilities.getSearchType();
-        var term = utilities.getSearchTerm();
+        var search = form.getSearchType();
+        var term = form.getSearchTerm();
         if(httpRequest.readyState === 4) { 
             if(httpRequest.status === 200) { 
                 var response = JSON.parse(httpRequest.responseText); 
