@@ -10,15 +10,12 @@
 define([], function(){
 
     var Year = 'search_years';
-    var search2011 = 'search_2011';
-    var search2012 = 'search_2012';
 
-    var GPA = 'gpa_in';
-    var Gender = 'gender_in';
-    var Major = 'major_in';
-    var SATTotal = 'sat_total_in';
-    var SATRead = 'sat_read_in';
-    var SATMath = 'sat_math_in';
+    var GPA = 'gpa';
+    var Gender = 'gender';
+    var Major = 'major';
+    var SATVerbal = 'sat_verbal';
+    var SATMath = 'sat_math';
 
     /**
       * getSearchTerm()
@@ -58,12 +55,12 @@ define([], function(){
       * @return An array of integers representing all the years selected
       *
       */
-    var getSearchyears = function() {
+    var getSearchYears = function() {
 
         rtnVal = [];
 
         //assumes there are no other input elements in this div besides checkboxes for years
-        var checkBoxes = document.getElementById('search_years').getEelemntsByTagName('input');
+        var checkBoxes = document.getElementById('search_years').getElementsByTagName('input');
 
         for(var i = 0; checkBoxes[i]; i++) {
             if(checkBoxes[i].checked) {
@@ -74,6 +71,19 @@ define([], function(){
         return rtnVal;
     }        
 
+    /**
+      * getSelectedFilter
+      *
+      * Returns the filter that user has selected.
+      *
+      * @param void
+      * @return the filter that was selected
+      *
+      */
+    var getSelectedFilter = function() {
+
+        return document.querySelector('input[name="filter"]:checked').value;
+    }
 
     /**
       * getFilterVals
@@ -89,28 +99,23 @@ define([], function(){
 
         switch(filter) {
             case GPA:
-                rtnVal.push(document.getElementById('gpa_min');
-                rtnVal.push(document.getElementById('gpa_max');
+                rtnVal.push(document.getElementById('gpa_min').value);
+                rtnVal.push(document.getElementById('gpa_max').value);
                 break;
             case Gender:
-                rtnVal.push(document.getElementById('gender');
+                rtnVal.push(document.getElementById('gender_select').value);
                 break;
             case Major:
-                rtnVal.push(document.getElementById('major');
+                rtnVal.push(document.getElementById('major_select').value);
                 break;
-            case SATTotal:
-                rtnVal.push(document.getElementById('satt_min');
-                rtnVal.push(document.getElementById('satt_max');
-                break;
-            case SATRead:
-                rtnVal.push(document.getElementById('satr_min');
-                rtnVal.push(document.getElementById('satr_max');
+            case SATVerbal:
+                rtnVal.push(document.getElementById('satv_min').value);
+                rtnVal.push(document.getElementById('satv_max').value);
                 break;
             case SATMath:
-                rtnVal.push(document.getElementById('satm_min');
-                rtnVal.push(document.getElementById('satm_max');
+                rtnVal.push(document.getElementById('satm_min').value);
+                rtnVal.push(document.getElementById('satm_max').value);
                 break;
-            case form.None:
             default:
         }
 
@@ -118,7 +123,7 @@ define([], function(){
     }
 
     /**
-      * inputLength
+      * filterInputLength
       *
       * Get the number of input elements there are for a given filter in 
       * index.html. For example, the GPA filter has an input length of 2 and
@@ -129,7 +134,7 @@ define([], function(){
       *         of getFilterVals.
       *
       */
-    var inputLength = function(filter) {
+    var filterInputLength = function(filter) {
 
         var inputs = getFilterVals(filter);
         return inputs.length;
@@ -143,12 +148,12 @@ define([], function(){
         GPA : GPA,
         Gender : Gender,
         Major : Major,
-        SATTotal : SATTotal,
-        SATRead : SATTotal,
+        SATVerbal : SATVerbal,
         SATMath : SATMath,
         getSearchYears : getSearchYears,
         getSearchTerm : getSearchTerm,
         getSearchType : getSearchType,
+        getSelectedFilter : getSelectedFilter,
         getFilterVals : getFilterVals,
         filterInputLength : filterInputLength
     };

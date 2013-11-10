@@ -31,11 +31,11 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
     */
     var lookup = function(layerArray, geocoder) {
 
-        // Get search type
+        // Get the search parameters from the page, as entered by the user.
         var sType = form.getSearchType();
-
-        // Get the search term from the page, as entered by the user.
         var sTerm = form.getSearchTerm();
+        var years = form.getSearchYears();
+        var filter = form.getSelectedFilter();
 
         // Did the user type anything?
         if(sTerm == "") {
@@ -112,7 +112,7 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
                             
                             //have only 1 requestor, so have to link requests
                             utilities.getInfoBoxElement().innerHTML = 'Calculating...';
-                            calculate.getAppInfo(sType, sTerm, null, ceeb);
+                            calculate.getAppInfo(sType, sTerm, years, filter, ceeb);
 
                         } else {
                             // Indicate to the user their search term was not found 
