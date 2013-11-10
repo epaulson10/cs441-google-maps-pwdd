@@ -12,6 +12,7 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
     
     //constants
     var APP_TABLE_ID = '1Dk_XmYIioHO9jltVtLzZuYR66BxkL-si8Wu7B8A';
+	var GEO_TABLE_ID = '1wEej4K9DkB_U3PeUn_f-hYK6mRNwgxqItc0iuNE';
 	var CEEB = 2;
     var APPLIED = 8;
     var ACCEPTED = 9;
@@ -111,26 +112,74 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
                 console.log(response); 
                 
                 //initialize counters to zero
-                var tApplied = tAccepted = tEnrolled = tConfirmed = 0; 
+                var tApplied = tAccepted = tEnrolled = tConfirmed = 0;
+				//Create an array to store ceeb and filter criteria numbers (key value pairs)
+				var schools = {};
                 
                 if(response["rows"] != undefined) {
                     //find the totals for students that have applied, confirmed, enrolled, and accepted
                     rows = response["rows"]; 
                     for(var i = 0; i < rows.length; i++){ 
                         if(rows[i][APPLIED] != "I"){ 
-                            tApplied ++; 
+                            tApplied ++;
+							
+							//Erik and Nick are adding this code
+							//Find all ceebs and number applied for them for top schools feature
+							var x = rows[i][CEEB];
+							
+							if (schools[x] === undefined){
+								schools[x] = 1;
+							}
+							else{
+								schools[x] = schools[x] + 1;
+							}
+
                         }                     
                         if(rows[i][ACCEPTED] == "A"){ 
-                            tAccepted ++; 
+                            tAccepted ++;
                         } 
                         if(rows[i][ENROLLED] == "Y"){ 
-                            tEnrolled ++; 
+                            tEnrolled ++;
                         }                     
                         if(rows[i][CONFIRMED] == "CONF"){ 
-                            tConfirmed ++; 
+                            tConfirmed ++;
                         } 
                     } 
-
+					
+					//Erik and Nick's section. Populate top schools bar.
+					//Sorting section taken from: http://stackoverflow.com/questions/1069666/sorting-javascript-object-by-property-value
+					var sortable = [];
+					for (var school in schools) {
+						sortable.push([school,schools[school]]);
+					}
+					sortable.sort(function(a,b) {return b[1]-a[1]});
+					
+					function handleTopSchoolsResponse() {
+						if(httpRequest.readyState === 4) { 
+							if(httpRequest.status === 200) { 
+                				var response = JSON.parse(httpRequest.responseText); 
+									var displayData = "";
+									var numTopSchools = 0;
+									if (sortable.length >10)
+										numTopSchools = 10;
+									else
+										numTopSchools = sortable.length;
+									for (var i =0; i < 10; i++) {
+										if (sortable[i] === undefined)
+											break;
+										displayData += (i+1) + ". " + utilities.getHSNameByCeeb(response,sortable[i][0]) + ": " + sortable[i][1] + "<br>";
+									}
+									utilities.getTopSchoolsBox().innerHTML = "<h3>Top Schools</h3>" + displayData;
+							}
+						}
+					}
+					
+					//create URL for request
+					var url = "https://www.googleapis.com/fusiontables/v1/query?sql=SELECT * FROM 1wEej4K9DkB_U3PeUn_f-hYK6mRNwgxqItc0iuNE WHERE Code NOT EQUAL TO '%22%22'&key=AIzaSyDPIDblZh-H55gEkg7u6KVry1OZ-pgGpsQ";
+					
+					utilities.sendRequest(url, handleTopSchoolsResponse); 
+   
+					
                     //string with all the application info we need to display
                     var temp = "Applied : "+tApplied+"<br>Accepted : " + tAccepted +
                                 "<br>Confirmed : " + tConfirmed + "<br>Enrolled : " + tEnrolled; 
@@ -140,6 +189,8 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
                 else{
                      utilities.getInfoBoxElement().innerHTML = "Cannot find data for " + search + ": " + term + ".";
                 }
+				
+				
             } 
         } 
     };
