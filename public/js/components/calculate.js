@@ -220,7 +220,7 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
             for (var i =0; i < 10; i++) {
                 if (sortable[i] === undefined)
                     break;
-                displayData += (i+1) + ". " +  sortable[i][1][1] + ": " + sortable[i][0] + "<br>";
+                displayData += (i+1) + ". " +  sortable[i][1][1] + ": " + sortable[i][1][0] + "<br>";
             }
             utilities.getTopSchoolsBox().innerHTML = "<h3>Top Schools</h3>" + displayData;
         }
