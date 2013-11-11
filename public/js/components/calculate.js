@@ -6,18 +6,21 @@
  *
  *  @author Joey Devlin
  *  @version 10/30/13.  Fixed formatting. Changes made by Kyle, Nick, and Erik
+ *  @version 11/10/13. Made some changes, so no longer have to make a third Fusion Table
+ *                     request. See topSchools for more information.
  */
 
 define(['./utilities','./admissions'], function(utilities, admissions) {
     
     //constants
-    var APP_TABLE_ID = '1Dk_XmYIioHO9jltVtLzZuYR66BxkL-si8Wu7B8A';
-	var GEO_TABLE_ID = '1wEej4K9DkB_U3PeUn_f-hYK6mRNwgxqItc0iuNE';
+    //https://www.google.com/fusiontables/data?docid=1-kMbG4vqpghLbiIgEEDwi8JT05JiUAMEWwYO18M#rows:id=1
+    var APP_TABLE_ID = '1-kMbG4vqpghLbiIgEEDwi8JT05JiUAMEWwYO18M';
 	var CEEB = 2;
     var APPLIED = 8;
     var ACCEPTED = 9;
     var CONFIRMED = 10;
     var ENROLLED = 11;
+    var HSNAME = 27;
 
   /**
     *  convertColumn()
@@ -58,7 +61,7 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
     *
     *  @param column The column the user is searching by
     *  @param value What was in the text box
-    *  @param restriction What filter was selected, for now is null
+    *  @param restrict What filter was selected, for now is null
     *  @param ceeb The HS lookup zoomed in on. Is used to handle HS name searches
     *  @return Column name in applicant info fusion table
     */
@@ -78,7 +81,7 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
             value = "'"+value+"'"; 
             
             //only want to get data for the HS we zoom in on
-            if(column == "HSName" && ceeb != undefined){
+            if(column == "HSName" && ceeb != undefined && ceeb != "NaN"){
                 firstHS = " AND HighSchoolCode = " + ceeb;
             }
         }
@@ -122,18 +125,6 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
                     for(var i = 0; i < rows.length; i++){ 
                         if(rows[i][APPLIED] != "I"){ 
                             tApplied ++;
-							
-							//Erik and Nick are adding this code
-							//Find all ceebs and number applied for them for top schools feature
-							var x = rows[i][CEEB];
-							
-							if (schools[x] === undefined){
-								schools[x] = 1;
-							}
-							else{
-								schools[x] = schools[x] + 1;
-							}
-
                         }                     
                         if(rows[i][ACCEPTED] == "A"){ 
                             tAccepted ++;
@@ -146,54 +137,96 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
                         } 
                     } 
 					
-					//Erik and Nick's section. Populate top schools bar.
-					//Sorting section taken from: http://stackoverflow.com/questions/1069666/sorting-javascript-object-by-property-value
-					var sortable = [];
-					for (var school in schools) {
-						sortable.push([school,schools[school]]);
-					}
-					sortable.sort(function(a,b) {return b[1]-a[1]});
-					
-					function handleTopSchoolsResponse() {
-						if(httpRequest.readyState === 4) { 
-							if(httpRequest.status === 200) { 
-                				var response = JSON.parse(httpRequest.responseText); 
-									var displayData = "";
-									var numTopSchools = 0;
-									if (sortable.length >10)
-										numTopSchools = 10;
-									else
-										numTopSchools = sortable.length;
-									for (var i =0; i < 10; i++) {
-										if (sortable[i] === undefined)
-											break;
-										displayData += (i+1) + ". " + utilities.getHSNameByCeeb(response,sortable[i][0]) + ": " + sortable[i][1] + "<br>";
-									}
-									utilities.getTopSchoolsBox().innerHTML = "<h3>Top Schools</h3>" + displayData;
-							}
-						}
-					}
-					
-					//create URL for request
-					var url = "https://www.googleapis.com/fusiontables/v1/query?sql=SELECT * FROM 1wEej4K9DkB_U3PeUn_f-hYK6mRNwgxqItc0iuNE WHERE Code NOT EQUAL TO '%22%22'&key=AIzaSyDPIDblZh-H55gEkg7u6KVry1OZ-pgGpsQ";
-					
-					utilities.sendRequest(url, handleTopSchoolsResponse); 
-   
-					
                     //string with all the application info we need to display
                     var temp = "Applied : "+tApplied+"<br>Accepted : " + tAccepted +
                                 "<br>Confirmed : " + tConfirmed + "<br>Enrolled : " + tEnrolled; 
                     
                     utilities.getInfoBoxElement().innerHTML ="Searched by " + search + " : " + term +"<br><br>" + temp; 
+
+                    //because have only one requester have to link all of these together
+					topSchools(response);
                 }
                 else{
                      utilities.getInfoBoxElement().innerHTML = "Cannot find data for " + search + ": " + term + ".";
+                     utilities.getTopSchoolsBox().innerHTML = "<h3>Top Schools</h3>" + "Cannot find data for " + search + ": " + term + ".";
                 }
 				
-				
-            } 
+            }
+            else{
+                utilities.getInfoBoxElement().innerHTML = "ERROR: for " + search + ": " + term + ".";
+                utilities.getTopSchoolsBox().innerHTML = "ERROR: for " + search + ": " + term + ".";
+            }
         } 
     };
+
+
+
+    /**
+    *  topSchools()
+    *
+    * Populates the right side bar with the schools that have the most applications
+    *
+    * @param response: SQL response from Query sent in getAppInfo
+    * @return void
+    */
+    var topSchools = function(response){ 
+        var tApplied = 0;
+        //Create an array to store ceeb and filter criteria numbers (key value pairs)
+        var schools = {};
+        
+        if(response["rows"] != undefined) {
+            rows = response["rows"]; 
+
+            //find the total number of students who applied to UP from each school
+            for(var i = 0; i < rows.length; i++){ 
+                if(rows[i][APPLIED] != "I"){
+
+                    //Erik and Nick are adding this code
+                    //Find all ceebs and number applied for them for top schools feature
+                    var ceeb = rows[i][CEEB];
+                    
+                    if (schools[ceeb] === undefined){
+                        var name = rows[i][HSNAME];
+                        schools[ceeb] = [1,name];
+                    }
+                    else{
+                        schools[ceeb][0] = schools[ceeb][0] + 1;
+                    }
+
+                }
+            }
+            console.log(schools);
+            
+            //Erik and Nick's section. Populate top schools bar.
+            //Sorting section taken from: http://stackoverflow.com/questions/1069666/sorting-javascript-object-by-property-value
+            var sortable = [];
+            for (var school in schools) {
+                sortable.push([school,schools[school]]);
+            }
+            sortable.sort(function(a,b) {return b[1][0]-a[1][0]});
+            console.log(sortable);
+
+            //decide how many schools to show
+            if (sortable.length >10)
+                numTopSchools = 10;
+            else
+                numTopSchools = sortable.length;
+
+            var displayData = "";
+
+            // Storable[i] looks like:
+            // [CeebCode, ArrayPointer]      0               1
+            //            ArrayPointer ->[#applied,High School name]
+            for (var i =0; i < 10; i++) {
+                if (sortable[i] === undefined)
+                    break;
+                displayData += (i+1) + ". " +  sortable[i][1][1] + ": " + sortable[i][0] + "<br>";
+            }
+            utilities.getTopSchoolsBox().innerHTML = "<h3>Top Schools</h3>" + displayData;
+        }
+
+                
+    }
     
     // Any functions defined in this return statement are considered public
     // functions by RequireJS, and accessible through the namespace that
