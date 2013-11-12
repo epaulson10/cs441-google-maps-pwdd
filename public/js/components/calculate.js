@@ -8,13 +8,15 @@
  *  @version 10/30/13.  Fixed formatting. Changes made by Kyle, Nick, and Erik
  *  @version 11/10/13. Made some changes, so no longer have to make a third Fusion Table
  *                     request. See topSchools for more information.
+ *  @version 11/11/13. Updated code, so the top schools are click-able.
+ *                     Still need to actually make it do something.
  */
 
-define(['./utilities','./admissions'], function(utilities, admissions) {
+define(['./usmap','./utilities','./admissions'], function(usmap,utilities, admissions) {
     
     //constants
     //https://www.google.com/fusiontables/data?docid=1-kMbG4vqpghLbiIgEEDwi8JT05JiUAMEWwYO18M#rows:id=1
-    var APP_TABLE_ID = '1-kMbG4vqpghLbiIgEEDwi8JT05JiUAMEWwYO18M';
+    var APP_TABLE_ID = '1TwmkByLOqdTQqwmYb7dIC6ygGDlQAjSyWNSCZUg';
 	var CEEB = 2;
     var APPLIED = 8;
     var ACCEPTED = 9;
@@ -187,7 +189,7 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
                     
                     if (schools[ceeb] === undefined){
                         var name = rows[i][HSNAME];
-                        schools[ceeb] = [1,name];
+                        schools[ceeb] = [1,name,ceeb];
                     }
                     else{
                         schools[ceeb][0] = schools[ceeb][0] + 1;
@@ -206,23 +208,31 @@ define(['./utilities','./admissions'], function(utilities, admissions) {
             sortable.sort(function(a,b) {return b[1][0]-a[1][0]});
             console.log(sortable);
 
+            //from here down feels more like view to me
+            //could move elsewhere
+
             //decide how many schools to show
             if (sortable.length >10)
                 numTopSchools = 10;
             else
                 numTopSchools = sortable.length;
-
             var displayData = "";
-
+            var element = utilities.getTopSchoolsBox();
+            element.innerHTML = "<h3>Top Schools</h3>";
             // Storable[i] looks like:
-            // [CeebCode, ArrayPointer]      0               1
-            //            ArrayPointer ->[#applied,High School name]
+            // [CeebCode, ArrayPointer]      0               1          2
+            //            ArrayPointer ->[#applied,High School name, ceeb]
             for (var i =0; i < 10; i++) {
                 if (sortable[i] === undefined)
                     break;
-                displayData += (i+1) + ". " +  sortable[i][1][1] + ": " + sortable[i][1][0] + "<br>";
+                var newPar =document.createElement("p");
+                newPar.innerHTML = (i+1) + ". " +  sortable[i][1][1] + ": " + sortable[i][1][0] + "<br>";
+                element.appendChild(newPar);
+                newPar.onclick = function(){
+                    //TODO: actually change the view
+                    console.log("CLICKED THIS THING");
+                };
             }
-            utilities.getTopSchoolsBox().innerHTML = "<h3>Top Schools</h3>" + displayData;
         }
 
                 
