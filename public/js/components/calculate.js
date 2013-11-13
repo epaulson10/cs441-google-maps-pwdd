@@ -13,7 +13,7 @@
  */
 
 //<<<<<<< HEAD
-define(['./utilities','./admissions', './form'], function(utilities, admissions, form) {
+define(['./usmap','./utilities','./admissions', './form'], function(usmap, utilities, admissions, form) {
 //=======
 //define(['./usmap','./utilities','./admissions'], function(usmap,utilities, admissions) {
 //>>>>>>> paulsonWarlenTopSchools
@@ -72,7 +72,7 @@ define(['./utilities','./admissions', './form'], function(utilities, admissions,
     *  @param ceeb The HS lookup zoomed in on. Is used to handle HS name searches
     *  @return Column name in applicant info fusion table
     */
-    var getAppInfo = function(column,value,restrict,ceeb){ 
+    var getAppInfo = function(column, value, years, restrict, ceeb){ 
 
         column = convertColumn(column);
 
