@@ -50,32 +50,27 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
 
             // Create a url for
             // a subsequent GET request to a Google server.
-            var term;
+            var terms = sTerm.split(',');
+            var term = terms[0];
             var eq;
             if (sType != admissions.ZIP && sType != admissions.CEEB) {
-                term = "'" + sTerm + "'";
+                term = "'" + term + "'";
                 eq = ' CONTAINS IGNORING CASE ';
             } else {
-                term = sTerm;
                 eq = ' = ';
             }
 
-            var query = "SELECT * FROM " + layerArray[0].eID + " WHERE ";
+            var query = "SELECT * FROM " + layerArray[0].eID + " WHERE " + sType + eq + term;
 
             // search by City or Highschool Name might also include a state like "Portland, OR"
             if (sType == admissions.HSNAME || sType == admissions.CITY) {
-                var terms = sTerm.split(',');
-                query += sType + eq + "'" + terms[0] + "'";
                 if (terms[1]) {
                     //trim off the leading space
                     terms[1] = terms[1].replace(/^\s/g, '');
                     query += " AND " + admissions.STATE + eq + "'" + terms[1] + "'";
                 }
-            } else {
-                query += sType + eq + term;
             } 
 
-        
             var url = "https://www.googleapis.com/fusiontables/v1/query";
             url = url + "?sql=" + query;
             url = url + "&key=" + apikey;
