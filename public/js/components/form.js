@@ -13,8 +13,8 @@ define([], function(){
     var GPA = 'gpa';
     var Gender = 'gender';
     var Major = 'major';
-    var SATVerbal = 'sat_verbal';
-    var SATMath = 'sat_math';
+    var SATVerbal = 'verbal';
+    var SATMath = 'math';
 
     /**
       * getSearchTerm()
