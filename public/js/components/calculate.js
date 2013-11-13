@@ -6,16 +6,27 @@
  *
  *  @author Joey Devlin
  *  @version 10/30/13.  Fixed formatting. Changes made by Kyle, Nick, and Erik
+ *  @version 11/10/13. Made some changes, so no longer have to make a third Fusion Table
+ *                     request. See topSchools for more information.
+ *  @version 11/11/13. Updated code, so the top schools are click-able.
+ *                     Still need to actually make it do something.
  */
 
+//<<<<<<< HEAD
 define(['./utilities','./admissions', './form'], function(utilities, admissions, form) {
+//=======
+//define(['./usmap','./utilities','./admissions'], function(usmap,utilities, admissions) {
+//>>>>>>> paulsonWarlenTopSchools
     
     //constants
-    var APP_TABLE_ID = '1Dk_XmYIioHO9jltVtLzZuYR66BxkL-si8Wu7B8A';
+    //https://www.google.com/fusiontables/data?docid=1-kMbG4vqpghLbiIgEEDwi8JT05JiUAMEWwYO18M#rows:id=1
+    var APP_TABLE_ID = '1TwmkByLOqdTQqwmYb7dIC6ygGDlQAjSyWNSCZUg';
+	var CEEB = 2;
     var APPLIED = 8;
     var ACCEPTED = 9;
     var CONFIRMED = 10;
-    var ENROLLED = 11; 
+    var ENROLLED = 11;
+    var HSNAME = 27;
 
     /**
       *  convertColumn()
@@ -48,23 +59,20 @@ define(['./utilities','./admissions', './form'], function(utilities, admissions,
         return input; 
     }; 
     
-    /**
-      *  getAppInfo()
-      *
-      *  Find the total number of studends that have enrolled, applied,
-      *  been accepted, and confirmed.
-      *
-      *  @param column The column the user is searching by
-      *  @param value What was in the text box
-      *  @param years An array of years to display data for
-      *  @param restriction What filter was selected
-      *  @param ceeb The HS lookup zoomed in on. Is used to handle HS name searches
-      *  @return Column name in applicant info fusion table
-      */
-    var getAppInfo = function(column, value, years, restrict, ceeb){ 
 
-        //TODO: We probably need to move all of these column names to a
-        //      different file, like admissions.js I would think
+  /**
+    *  getAppInfo()
+    *
+    *  Find the total number of studends that have enrolled, applied,
+    *  been accepted, and confirmed.
+    *
+    *  @param column The column the user is searching by
+    *  @param value What was in the text box
+    *  @param restrict What filter was selected, for now is null
+    *  @param ceeb The HS lookup zoomed in on. Is used to handle HS name searches
+    *  @return Column name in applicant info fusion table
+    */
+    var getAppInfo = function(column,value,restrict,ceeb){ 
 
         column = convertColumn(column);
 
@@ -81,7 +89,7 @@ define(['./utilities','./admissions', './form'], function(utilities, admissions,
             value = "'"+value+"'"; 
             
             //only want to get data for the HS we zoom in on
-            if(column == "HSName" && ceeb != undefined){
+            if(column == "HSName" && ceeb != undefined && ceeb != "NaN"){
                 firstHS = " AND HighSchoolCode = " + ceeb;
             }
         }
@@ -156,38 +164,126 @@ define(['./utilities','./admissions', './form'], function(utilities, admissions,
                 console.log(response); 
                 
                 //initialize counters to zero
-                var tApplied = tAccepted = tEnrolled = tConfirmed = 0; 
+                var tApplied = tAccepted = tEnrolled = tConfirmed = 0;
+				//Create an array to store ceeb and filter criteria numbers (key value pairs)
+				var schools = {};
                 
                 if(response["rows"] != undefined) {
                     //find the totals for students that have applied, confirmed, enrolled, and accepted
                     rows = response["rows"]; 
                     for(var i = 0; i < rows.length; i++){ 
                         if(rows[i][APPLIED] != "I"){ 
-                            tApplied ++; 
+                            tApplied ++;
                         }                     
                         if(rows[i][ACCEPTED] == "A"){ 
-                            tAccepted ++; 
+                            tAccepted ++;
                         } 
                         if(rows[i][ENROLLED] == "Y"){ 
-                            tEnrolled ++; 
+                            tEnrolled ++;
                         }                     
                         if(rows[i][CONFIRMED] == "CONF"){ 
-                            tConfirmed ++; 
+                            tConfirmed ++;
                         } 
                     } 
-
+					
                     //string with all the application info we need to display
                     var temp = "Applied : "+tApplied+"<br>Accepted : " + tAccepted +
                                 "<br>Confirmed : " + tConfirmed + "<br>Enrolled : " + tEnrolled; 
                     
                     utilities.getInfoBoxElement().innerHTML ="Searched by " + search + " : " + term +"<br><br>" + temp; 
+
+                    //because have only one requester have to link all of these together
+					topSchools(response);
                 }
                 else{
                      utilities.getInfoBoxElement().innerHTML = "Cannot find data for " + search + ": " + term + ".";
+                     utilities.getTopSchoolsBox().innerHTML = "<h3>Top Schools</h3>" + "Cannot find data for " + search + ": " + term + ".";
                 }
-            } 
+				
+            }
+            else{
+                utilities.getInfoBoxElement().innerHTML = "ERROR: for " + search + ": " + term + ".";
+                utilities.getTopSchoolsBox().innerHTML = "ERROR: for " + search + ": " + term + ".";
+            }
         } 
     };
+
+
+
+    /**
+    *  topSchools()
+    *
+    * Populates the right side bar with the schools that have the most applications
+    *
+    * @param response: SQL response from Query sent in getAppInfo
+    * @return void
+    */
+    var topSchools = function(response){ 
+        var tApplied = 0;
+        //Create an array to store ceeb and filter criteria numbers (key value pairs)
+        var schools = {};
+        
+        if(response["rows"] != undefined) {
+            rows = response["rows"]; 
+
+            //find the total number of students who applied to UP from each school
+            for(var i = 0; i < rows.length; i++){ 
+                if(rows[i][APPLIED] != "I"){
+
+                    //Erik and Nick are adding this code
+                    //Find all ceebs and number applied for them for top schools feature
+                    var ceeb = rows[i][CEEB];
+                    
+                    if (schools[ceeb] === undefined){
+                        var name = rows[i][HSNAME];
+                        schools[ceeb] = [1,name,ceeb];
+                    }
+                    else{
+                        schools[ceeb][0] = schools[ceeb][0] + 1;
+                    }
+
+                }
+            }
+            console.log(schools);
+            
+            //Erik and Nick's section. Populate top schools bar.
+            //Sorting section taken from: http://stackoverflow.com/questions/1069666/sorting-javascript-object-by-property-value
+            var sortable = [];
+            for (var school in schools) {
+                sortable.push([school,schools[school]]);
+            }
+            sortable.sort(function(a,b) {return b[1][0]-a[1][0]});
+            console.log(sortable);
+
+            //from here down feels more like view to me
+            //could move elsewhere
+
+            //decide how many schools to show
+            if (sortable.length >10)
+                numTopSchools = 10;
+            else
+                numTopSchools = sortable.length;
+            var displayData = "";
+            var element = utilities.getTopSchoolsBox();
+            element.innerHTML = "<h3>Top Schools</h3>";
+            // Storable[i] looks like:
+            // [CeebCode, ArrayPointer]      0               1          2
+            //            ArrayPointer ->[#applied,High School name, ceeb]
+            for (var i =0; i < 10; i++) {
+                if (sortable[i] === undefined)
+                    break;
+                var newPar =document.createElement("p");
+                newPar.innerHTML = (i+1) + ". " +  sortable[i][1][1] + ": " + sortable[i][1][0] + "<br>";
+                element.appendChild(newPar);
+                newPar.onclick = function(){
+                    //TODO: actually change the view
+                    console.log("CLICKED THIS THING");
+                };
+            }
+        }
+
+                
+    }
     
     // Any functions defined in this return statement are considered public
     // functions by RequireJS, and accessible through the namespace that

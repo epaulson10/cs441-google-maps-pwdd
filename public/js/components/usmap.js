@@ -112,12 +112,18 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
                             
                             //have only 1 requestor, so have to link requests
                             utilities.getInfoBoxElement().innerHTML = 'Calculating...';
+
                             calculate.getAppInfo(sType, sTerm, years, filter, ceeb);
+
+                            utilities.getTopSchoolsBox().innerHTML = 'Calculating...';
+                            calculate.getAppInfo(sType, sTerm, null, ceeb);
+
 
                         } else {
                             // Indicate to the user their search term was not found 
                             //TODO: figure out why getErrorElement doesn't work
                             utilities.getInfoBoxElement().innerHTML = "Cannot locate " + sType + ": " + sTerm + ".";
+                            utilities.getTopSchoolsBox().innerHTML = "Cannot locate " + sType + ": " + sTerm + ".";
                         }
 
                     }
@@ -214,9 +220,8 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         // Create the httpRequestor for this namespace.
         utilities.makeRequestor();
 
-        // Encrypted IDs for the Google Fusion Table containing the
-        // Oregon high school and CEEB data.
-        var schoolEID = '1Mrzm5J87PQO5W8T-HraZCQvXF2KhF4rWDowphzo';
+        //https://www.google.com/fusiontables/DataSource?docid=1wEej4K9DkB_U3PeUn_f-hYK6mRNwgxqItc0iuNE#rows:id=1
+        var schoolEID = '1wEej4K9DkB_U3PeUn_f-hYK6mRNwgxqItc0iuNE';
 
         // Instatiate a new geocoder service
         var geocoder = new google.maps.Geocoder();
