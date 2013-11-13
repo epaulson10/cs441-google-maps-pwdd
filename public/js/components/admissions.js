@@ -103,6 +103,5 @@ define([], function() {
         getState : getState,
         getCity : getCity,
         getCEEB : getCEEB,
-        majorToCode : majorToCode
     };
 });
