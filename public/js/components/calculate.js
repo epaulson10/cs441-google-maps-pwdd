@@ -10,6 +10,8 @@
  *                     request. See topSchools for more information.
  *  @version 11/11/13. Updated code, so the top schools are click-able.
  *                     Still need to actually make it do something.
+ *  @version 11/12/13. Updated code, Top schools can be clicked, which is equivalent
+ *                     to searching by the CEEB of that school
  */
 
 
@@ -205,8 +207,6 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
         } 
     };
 
-
-
     /**
     *  topSchools()
     *
@@ -253,13 +253,10 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
             console.log(sortable);
 
 			addTopSchools(sortable);
-        }
-
-                
+        }     
     }
-	
-	
-	/*
+  
+  /**
 	* addTopSchools()
 	*
 	* Adds the HTML and listeners to the Top Schools info panel
@@ -302,11 +299,9 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
 				form.setSearchTerm(this.id);
 				
 				document.getElementById('lookupButton').click();
-				
 			};
 		}
 	}
-    
     // Any functions defined in this return statement are considered public
     // functions by RequireJS, and accessible through the namespace that
     // is attached to this module when loaded in other files.
