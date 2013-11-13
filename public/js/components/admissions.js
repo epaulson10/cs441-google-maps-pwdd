@@ -77,7 +77,6 @@ define([], function() {
         return response["rows"][0][2].toString();
     };
 
-
   /**
     * getCEEB
     *

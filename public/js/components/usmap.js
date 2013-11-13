@@ -42,11 +42,8 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
             // Give an error message to the user:
             utilities.getErrorMsgElement().innerHTML = "Error: Please enter something to search for";
         } else {
-
             // Clear any error message.
             utilities.getErrorMsgElement().innerHTML = "";
-
-            // Get all the information for a given search term.
 
             // Create a url for
             // a subsequent GET request to a Google server.
@@ -78,10 +75,8 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
             function handleResponse() {
                 if(httpRequest.readyState === 4) {
                     if(httpRequest.status === 200) {
-
                         // The code reaches this point because the Google server
                         // responded with some useful data.
-
                         var response = JSON.parse(httpRequest.responseText);
                         console.log(response);
                         if(response["rows"] != undefined) {
@@ -135,13 +130,10 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
                             utilities.getInfoBoxElement().innerHTML = "Cannot locate " + sType + ": " + sTerm + ".";
                             utilities.getTopSchoolsBox().innerHTML = "Cannot locate " + sType + ": " + sTerm + ".";
                         }
-
                     }
                 }
             }
-
         }
-
         // Send the GET Request to the Google Server
         utilities.sendRequest(url, handleResponse);
     };
@@ -267,7 +259,6 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
             return lookup(layerArray, geocoder);
         });
     };
-
 
     // Any functions defined in this return statement are considered public
     // functions by RequireJS, and accessible through the namespace that

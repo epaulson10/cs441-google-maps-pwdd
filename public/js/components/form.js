@@ -10,7 +10,6 @@
 define([], function(){
 
     var Year = 'search_years';
-
     var GPA = 'gpa';
     var Gender = 'gender';
     var Major = 'major';
@@ -30,6 +29,18 @@ define([], function(){
 
         return document.getElementById("search_term").value;
     };
+	 
+	 /**
+      * setSearchTerm()
+      *
+      * This function sets the search term based on the parameter passed in.
+      *
+      * @param value - The new search term
+      * @return void
+      */
+	var setSearchTerm = function(value) {
+	    document.getElementById("search_term").value = value;
+	}
 
     /**
       * getSearchType()
@@ -44,6 +55,18 @@ define([], function(){
         
         return document.getElementById("search_type").value;
     }
+	
+	/**
+      * setSearchType()
+      *
+      * This function sets the search type based on the parameter passed in.
+      *
+      * @param value - The new search type
+      * @return void
+      */
+	var setSearchType = function(value) {
+	    document.getElementById("search_type").value = value;
+	}
 
     /**
       * getSearchYears()
@@ -153,6 +176,8 @@ define([], function(){
         getSearchYears : getSearchYears,
         getSearchTerm : getSearchTerm,
         getSearchType : getSearchType,
+		setSearchTerm : setSearchTerm,
+		setSearchType : setSearchType,
         getSelectedFilter : getSelectedFilter,
         getFilterVals : getFilterVals,
         filterInputLength : filterInputLength

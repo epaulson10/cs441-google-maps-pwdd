@@ -10,13 +10,12 @@
  *                     request. See topSchools for more information.
  *  @version 11/11/13. Updated code, so the top schools are click-able.
  *                     Still need to actually make it do something.
+ *  @version 11/12/13. Updated code, Top schools can be clicked, which is equivalent
+ *                     to searching by the CEEB of that school
  */
 
-//<<<<<<< HEAD
+
 define(['./usmap','./utilities','./admissions', './form'], function(usmap, utilities, admissions, form) {
-//=======
-//define(['./usmap','./utilities','./admissions'], function(usmap,utilities, admissions) {
-//>>>>>>> paulsonWarlenTopSchools
     
     //constants
     //https://www.google.com/fusiontables/data?docid=1-kMbG4vqpghLbiIgEEDwi8JT05JiUAMEWwYO18M#rows:id=1
@@ -196,7 +195,7 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                     var temp = "Applied : "+tApplied+"<br>Accepted : " + tAccepted +
                                 "<br>Confirmed : " + tConfirmed + "<br>Enrolled : " + tEnrolled; 
                     
-                    utilities.getInfoBoxElement().innerHTML ="Searched by " + search + " : " + term +"<br><br>" + temp; 
+                    utilities.getInfoBoxElement().innerHTML ="<div id = infoBoxHeader> Searched by " + search + " : " + term +"<br><br></div>" + temp; 
 
                     //because have only one requester have to link all of these together
 					topSchools(response);
@@ -213,8 +212,6 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
             }
         } 
     };
-
-
 
     /**
     *  topSchools()
@@ -261,36 +258,56 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
             sortable.sort(function(a,b) {return b[1][0]-a[1][0]});
             console.log(sortable);
 
-            //from here down feels more like view to me
-            //could move elsewhere
-
-            //decide how many schools to show
-            if (sortable.length >10)
-                numTopSchools = 10;
-            else
-                numTopSchools = sortable.length;
-            var displayData = "";
-            var element = utilities.getTopSchoolsBox();
-            element.innerHTML = "<h3>Top Schools</h3>";
-            // Storable[i] looks like:
-            // [CeebCode, ArrayPointer]      0               1          2
-            //            ArrayPointer ->[#applied,High School name, ceeb]
-            for (var i =0; i < 10; i++) {
-                if (sortable[i] === undefined)
-                    break;
-                var newPar =document.createElement("p");
-                newPar.innerHTML = (i+1) + ". " +  sortable[i][1][1] + ": " + sortable[i][1][0] + "<br>";
-                element.appendChild(newPar);
-                newPar.onclick = function(){
-                    //TODO: actually change the view
-                    console.log("CLICKED THIS THING");
-                };
-            }
-        }
-
-                
+			addTopSchools(sortable);
+        }     
     }
-    
+  
+  /**
+	* addTopSchools()
+	*
+	* Adds the HTML and listeners to the Top Schools info panel
+	*
+	* @param : storable - data strucure containing the necessary info to 
+	*		   search for a specific High School
+	*/
+	function addTopSchools(sortable){
+		//decide how many schools to show
+		if (sortable.length >10)
+			numTopSchools = 10;
+		else
+			numTopSchools = sortable.length;
+			
+		var displayData = "";
+		var element = utilities.getTopSchoolsBox();
+		
+		//add header to field
+		element.innerHTML = "<h3>Top Schools</h3>";
+		
+		// Storable[i] looks like:
+		// [CeebCode, ArrayPointer]      0               1          2
+		//            ArrayPointer ->[#applied,High School name, ceeb]
+		for (var i =0; i < 10; i++) {
+			if (sortable[i] === undefined)
+				break;
+			var newPar =document.createElement("p");
+			var ceebParam = sortable[i][0];
+			newPar.innerHTML = "<a href = #>" + (i+1) + ". " +  sortable[i][1][1] + ": " + sortable[i][1][0] + "</a>" + "<br>";
+			newPar.id = ceebParam;
+			element.appendChild(newPar);
+			
+			//when the user clicks on a school, simulate search by CEEB
+			newPar.onclick = function(){
+				console.log("CLICKED " + this.id);
+				var origSearchTerm = form.getSearchTerm();
+				var origSearchType = form.getSearchType();
+				
+				form.setSearchType("Code");
+				form.setSearchTerm(this.id);
+				
+				document.getElementById('lookupButton').click();
+			};
+		}
+	}
     // Any functions defined in this return statement are considered public
     // functions by RequireJS, and accessible through the namespace that
     // is attached to this module when loaded in other files.

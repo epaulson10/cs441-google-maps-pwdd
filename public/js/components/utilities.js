@@ -48,11 +48,9 @@ define([], function(){
     * @return void
     */
     var forEach = function(array, action) {
-
         for(var i = 0; i < array.length; i++) {
             action(array[i]);
         }
-
     };
 
   /**
@@ -70,7 +68,6 @@ define([], function(){
     *  @return void
     */
     var makeRequestor = function() {
-
         if(window.XMLHttpRequest) {// Mozilla, Safari, ...
             httpRequest = new XMLHttpRequest();
         } else if(window.ActiveXObject) {// IE
@@ -123,10 +120,8 @@ define([], function(){
     * @return The html element with id "errormessage"
     */
     var getErrorMsgElement = function() {
-
         return document.getElementById("errormessage");
     };
-
 
   /**
     * getInfoBoxElement()
