@@ -12,16 +12,13 @@
  *                     Still need to actually make it do something.
  */
 
-//<<<<<<< HEAD
+
 define(['./usmap','./utilities','./admissions', './form'], function(usmap, utilities, admissions, form) {
-//=======
-//define(['./usmap','./utilities','./admissions'], function(usmap,utilities, admissions) {
-//>>>>>>> paulsonWarlenTopSchools
     
     //constants
     //https://www.google.com/fusiontables/data?docid=1-kMbG4vqpghLbiIgEEDwi8JT05JiUAMEWwYO18M#rows:id=1
     var APP_TABLE_ID = '1TwmkByLOqdTQqwmYb7dIC6ygGDlQAjSyWNSCZUg';
-	var CEEB = 2;
+    var CEEB = 2;
     var APPLIED = 8;
     var ACCEPTED = 9;
     var CONFIRMED = 10;
@@ -171,8 +168,8 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                 
                 //initialize counters to zero
                 var tApplied = tAccepted = tEnrolled = tConfirmed = 0;
-				//Create an array to store ceeb and filter criteria numbers (key value pairs)
-				var schools = {};
+                //Create an array to store ceeb and filter criteria numbers (key value pairs)
+                var schools = {};
                 
                 if(response["rows"] != undefined) {
                     //find the totals for students that have applied, confirmed, enrolled, and accepted
@@ -191,7 +188,7 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                             tConfirmed ++;
                         } 
                     } 
-					
+                    
                     //string with all the application info we need to display
                     var temp = "Applied : "+tApplied+"<br>Accepted : " + tAccepted +
                                 "<br>Confirmed : " + tConfirmed + "<br>Enrolled : " + tEnrolled; 
@@ -199,13 +196,13 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                     utilities.getInfoBoxElement().innerHTML ="Searched by " + search + " : " + term +"<br><br>" + temp; 
 
                     //because have only one requester have to link all of these together
-					topSchools(response);
+                    topSchools(response);
                 }
                 else{
                      utilities.getInfoBoxElement().innerHTML = "Cannot find data for " + search + ": " + term + ".";
                      utilities.getTopSchoolsBox().innerHTML = "<h3>Top Schools</h3>" + "Cannot find data for " + search + ": " + term + ".";
                 }
-				
+                
             }
             else{
                 utilities.getInfoBoxElement().innerHTML = "ERROR: for " + search + ": " + term + ".";
