@@ -90,6 +90,10 @@ define(['./admissions', './utilities'], function(admissions, utilities) {
     var filterBy = function(stype, sterm, eq) {
         console.log('Im in filterBy. type = ' + stype + ' term = ' + sterm + 'eq' + eq);
         var filter;
+
+        var terms = sterm.split(',');
+        sterm = terms[0];
+
         //handles number based queries
         if(eq.match(/=/)){
             filter = '' + stype + ' = ' + sterm;
@@ -98,6 +102,13 @@ define(['./admissions', './utilities'], function(admissions, utilities) {
         else{
             filter = stype + " CONTAINS IGNORING CASE " + "'" + sterm + "'";
         }
+
+        // the input might also include a state
+        if (terms[1]) {
+            terms[1] = terms[1].replace(/^\s/g, '');
+            filter += " AND " + admissions.STATE + eq + "'" + terms[1] + "'";
+        }
+
         this.applyFilter(null, null, filter);
     }
 

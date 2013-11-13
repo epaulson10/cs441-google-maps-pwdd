@@ -79,6 +79,9 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
         //set defaults for variables
         var match = " CONTAINS IGNORING CASE ";
         var firstHS = "";
+
+        var values = value.split(',');
+        value = values[0];
         
         //need to deal with integer and string matches
         if(column == "HighSchoolCode" || column == "HSZip"){
@@ -92,6 +95,11 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
             if(column == "HSName" && ceeb != undefined && ceeb != "NaN"){
                 firstHS = " AND HighSchoolCode = " + ceeb;
             }
+
+            if(column == "HSState" && values[1]) {
+                values[1] = values[1].replace(/^\s/g, '');
+                firstHS = " AND HSState CONTAINS IGNORING CASE '" + values[1] + "'";
+            }
         }
 
         // make sure we only get data for the selected years
@@ -100,8 +108,6 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
             data_years += "'" + years[i] + "', ";
         }
         //trim off the last ", " and put the closing paren on
-        //var re = /, $/;
-        //data_years.replace(re, ')');
         data_years = data_years.slice(0, -2);
         data_years += ')';
 
