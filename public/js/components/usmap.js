@@ -258,7 +258,6 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         });
     };
 
-
     // Any functions defined in this return statement are considered public
     // functions by RequireJS, and accessible through the namespace that
     // is attached to this module when loaded in other files.

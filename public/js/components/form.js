@@ -30,6 +30,10 @@ define([], function(){
 
         return document.getElementById("search_term").value;
     };
+	
+	var setSearchTerm = function(foo) {
+	    document.getElementById("search_term").value = foo;
+	}
 
     /**
       * getSearchType()
@@ -44,6 +48,10 @@ define([], function(){
         
         return document.getElementById("search_type").value;
     }
+	
+	var setSearchType = function(foo) {
+	    document.getElementById("search_type").value = foo;
+	}
 
     /**
       * getSearchYears()
@@ -153,6 +161,8 @@ define([], function(){
         getSearchYears : getSearchYears,
         getSearchTerm : getSearchTerm,
         getSearchType : getSearchType,
+		setSearchTerm : setSearchTerm,
+		setSearchType : setSearchType,
         getSelectedFilter : getSelectedFilter,
         getFilterVals : getFilterVals,
         filterInputLength : filterInputLength
