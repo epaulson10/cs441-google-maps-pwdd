@@ -153,6 +153,17 @@ define([], function(){
 
         return document.getElementById("top_schools");
     };
+
+
+    /**
+      * getTopSchools
+      *
+      */
+    //var getTopSchools = function() {
+        
+      //  var box = getTopSchoolsBox();
+
+
 	
 	/**
     * getHSNameByCeeb()

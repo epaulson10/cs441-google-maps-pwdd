@@ -13,6 +13,10 @@
 
 define(['./utilities', './admissions', './layers', './calculate', './form'], function(utilities, admissions, layers, calculate, form) {
 
+
+    var schoolLayer;
+    var geocoder;
+
   /**
     *  lookup()
     *
@@ -123,11 +127,7 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
                             //have only 1 requestor, so have to link requests
                             utilities.getInfoBoxElement().innerHTML = 'Calculating...';
 
-                            calculate.getAppInfo(sType, sTerm, years, filter, ceeb);
-
-                            utilities.getTopSchoolsBox().innerHTML = 'Calculating...';
-                            calculate.getAppInfo(sType, sTerm, null, ceeb);
-
+                            calculate.getAppInfo(sType, sTerm, years, filter, ceeb, layerArray[0], geocoder);
 
                         } else {
                             // Indicate to the user their search term was not found 
@@ -211,6 +211,49 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         });
     };
 
+
+    var addTopSchoolsEventListeners = function() {
+        var topSchools = utilities.getTopSchoolsBox().children;
+
+        console.log("adding listeners. found " + topSchools.length + " elements.");
+
+        console.log(topSchools);
+        console.log('first ele');
+        console.log(topSchools[0]);
+        for(var i = 0; topSchools[i]; i++) {
+            topSchools[i].onclick = function() {
+                //createInfoWindow(this.id);
+                console.log('Hello: ' + this.id);
+            };
+        }
+    }
+
+
+    /**
+      * showInfoWindow
+      *
+      * @param addr The addr of the high school we want to click
+      * 
+      */
+    var createInfoWindow = function(addr) {
+
+        geocoder.geocode({
+            'address' : addr
+        }, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                coords = results[0].geometry.location;
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+
+        console.log('-- GEODUDE: --');
+        console.log('  Sent: ' + addr);
+        console.log('  Got: ' + coords);
+        //layers.showInfoWindow.call(schoolLayer, coords);
+        
+    }
+
   /**
     *  initialize()
     *
@@ -234,7 +277,7 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         var schoolEID = '1wEej4K9DkB_U3PeUn_f-hYK6mRNwgxqItc0iuNE';
 
         // Instatiate a new geocoder service
-        var geocoder = new google.maps.Geocoder();
+        geocoder = new google.maps.Geocoder();
 
         // The center point of the map is Lincoln, NB.
         var usa = new google.maps.LatLng(40.8358, -96.6452);
@@ -252,7 +295,7 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         // Create a Layer object for the high schools layer.  The second parameter
         // creates the Google FusionTablesLayer object.  The Layer is not currently being
         // filtered, so the final parameter is false.
-        var schoolLayer = new layers.Layer("schools", new google.maps.FusionTablesLayer({
+        schoolLayer = new layers.Layer("schools", new google.maps.FusionTablesLayer({
             query : {
                 from : schoolEID
             }
@@ -276,6 +319,7 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         lookup : lookup,
         getZoomLevel : getZoomLevel,
         centerAt : centerAt,
+        createInfoWindow : createInfoWindow,
         initialize : initialize
     };
 });

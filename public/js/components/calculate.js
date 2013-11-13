@@ -13,10 +13,10 @@
  */
 
 
-define(['./usmap','./utilities','./admissions', './form'], function(usmap, utilities, admissions, form) {
+define(['./usmap','./utilities','./admissions', './form', './layers'], function(usmap, utilities, admissions, form, layers) {
     
     //constants
-    //https://www.google.com/fusiontables/data?docid=1-kMbG4vqpghLbiIgEEDwi8JT05JiUAMEWwYO18M#rows:id=1
+    //https://www.google.com/fusiontables/data?docid=1TwmkByLOqdTQqwmYb7dIC6ygGDlQAjSyWNSCZUg
     var APP_TABLE_ID = '1TwmkByLOqdTQqwmYb7dIC6ygGDlQAjSyWNSCZUg';
     var CEEB = 2;
     var APPLIED = 8;
@@ -24,6 +24,7 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
     var CONFIRMED = 10;
     var ENROLLED = 11;
     var HSNAME = 27;
+    var HSADDR = 28;
 
     /**
       *  convertColumn()
@@ -69,7 +70,7 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
     *  @param ceeb The HS lookup zoomed in on. Is used to handle HS name searches
     *  @return Column name in applicant info fusion table
     */
-    var getAppInfo = function(column, value, years, restrict, ceeb){ 
+    var getAppInfo = function(column, value, years, restrict, ceeb, layers, geocoder){ 
 
         column = convertColumn(column);
 
@@ -145,7 +146,10 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
         url += "&key=" + apikey; 
         console.log(url); 
    
-        utilities.sendRequest(url, appResponse); 
+        utilities.sendRequest(url, function() {
+            //console.log(layers);
+            appResponse(layers);
+        }); 
     }; 
 
     /**
@@ -158,7 +162,8 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
       * @param void
       * @return void
       */
-    var appResponse = function(){ 
+    var appResponse = function(myLayer) { 
+       
         var search = form.getSearchType();
         var term = form.getSearchTerm();
         if(httpRequest.readyState === 4) { 
@@ -196,7 +201,7 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                     utilities.getInfoBoxElement().innerHTML ="Searched by " + search + " : " + term +"<br><br>" + temp; 
 
                     //because have only one requester have to link all of these together
-                    topSchools(response);
+                    topSchools(response, myLayer);
                 }
                 else{
                      utilities.getInfoBoxElement().innerHTML = "Cannot find data for " + search + ": " + term + ".";
@@ -221,7 +226,8 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
     * @param response: SQL response from Query sent in getAppInfo
     * @return void
     */
-    var topSchools = function(response){ 
+    var topSchools = function(response, myLayer){ 
+
         var tApplied = 0;
         //Create an array to store ceeb and filter criteria numbers (key value pairs)
         var schools = {};
@@ -239,7 +245,9 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                     
                     if (schools[ceeb] === undefined){
                         var name = rows[i][HSNAME];
-                        schools[ceeb] = [1,name,ceeb];
+                        var addr = rows[i][HSADDR];
+                        // we probably don't need the ceeb in each element twice...
+                        schools[ceeb] = [1,name,ceeb,addr];
                     }
                     else{
                         schools[ceeb][0] = schools[ceeb][0] + 1;
@@ -247,7 +255,6 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
 
                 }
             }
-            console.log(schools);
             
             //Erik and Nick's section. Populate top schools bar.
             //Sorting section taken from: http://stackoverflow.com/questions/1069666/sorting-javascript-object-by-property-value
@@ -256,36 +263,56 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                 sortable.push([school,schools[school]]);
             }
             sortable.sort(function(a,b) {return b[1][0]-a[1][0]});
-            console.log(sortable);
 
-            //from here down feels more like view to me
-            //could move elsewhere
-
-            //decide how many schools to show
-            if (sortable.length >10)
-                numTopSchools = 10;
-            else
-                numTopSchools = sortable.length;
-            var displayData = "";
-            var element = utilities.getTopSchoolsBox();
-            element.innerHTML = "<h3>Top Schools</h3>";
-            // Storable[i] looks like:
-            // [CeebCode, ArrayPointer]      0               1          2
-            //            ArrayPointer ->[#applied,High School name, ceeb]
-            for (var i =0; i < 10; i++) {
-                if (sortable[i] === undefined)
-                    break;
-                var newPar =document.createElement("p");
-                newPar.innerHTML = (i+1) + ". " +  sortable[i][1][1] + ": " + sortable[i][1][0] + "<br>";
-                element.appendChild(newPar);
-                newPar.onclick = function(){
-                    //TODO: actually change the view
-                    console.log("CLICKED THIS THING");
-                };
-            }
+            addTopSchools(sortable, myLayer);
         }
+    }//topSchools
 
-                
+    /*
+    * addTopSchools()
+    *
+    * Adds the HTML and listeners to the Top Schools info panel
+    *
+    * @param : storable - data strucure containing the necessary info to
+    *                  search for a specific High School
+    */
+    function addTopSchools(sortable, myLayer) {
+    
+        var displayData = "";
+        var element = utilities.getTopSchoolsBox();
+    
+        //add header to field
+        element.innerHTML = "<h3>Top Schools</h3>";
+    
+        // Storable[i] looks like:
+        // [CeebCode, ArrayPointer]      0               1        2
+        //            ArrayPointer ->[#applied,High School name, ceeb, addr]
+        for (var i = 0; i < 10; i++) {
+            if (sortable[i] === undefined)
+                    break;
+            var newPar =document.createElement("p");
+            var ceebParam = sortable[i][0];
+            newPar.innerHTML = "<a href = #>" + (i+1) + ". " +  sortable[i][1][1] + ": " + sortable[i][1][0] + "</a>" + "<br>";
+            newPar.id = sortable[i][1][3];
+            element.appendChild(newPar);
+    
+            //when the user clicks on a school, simulate search by CEEB
+            newPar.onclick = function(){
+                    console.log("CLICKED " + this.id);
+                    console.log('got my layer');
+                    console.log(myLayer);
+
+                    layers.showInfoWindow(myLayer, this.id);
+
+                    //var origSearchTerm = form.getSearchTerm();
+                    //var origSearchType = form.getSearchType();
+    
+                    //form.setSearchType("Code");
+                    //form.setSearchTerm(this.id);
+    
+                    //document.getElementById('lookupButton').click();
+            };
+        }
     }
     
     // Any functions defined in this return statement are considered public

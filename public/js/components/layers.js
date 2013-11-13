@@ -12,6 +12,47 @@
 
 define(['./admissions', './utilities'], function(admissions, utilities) {
 
+    /**
+      * showInfoWindow
+      *
+      * Simulate click on a Fusion Table layer marker
+      *
+      * @param coords The lat and lng of the high school marker
+      *
+      */
+    var showInfoWindow = function(addr) {
+        var geocoder = new google.maps.Geocoder();
+        var coords;
+
+        var address = addr.toString();
+
+        geocoder.geocode({
+            'address' : address
+        }, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                coords = results[0].geometry.location;
+                console.log(coords);
+
+                //var info = new google.maps.InfoWindow();
+                //info.setOptions({
+                //    content: "<p>hello world</p>",
+                //    position: coords
+                //});
+
+                //info.open(this.map);
+
+                var mouseEvt = {
+                    latLng : coords
+                };
+
+                google.maps.event.trigger(this.ref, 'click', mouseEvt);
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });       
+
+    }
+
   /**
     * applyFilter()
     *
@@ -142,6 +183,10 @@ define(['./admissions', './utilities'], function(admissions, utilities) {
         this.applyFilter = function(newEID, select, predicate) {
             return applyFilter.call(this, newEID, select, predicate);
         };
+
+        //this.showInfoWindow = function(addr) {
+        //    return showInfoWindow(addr);
+        //};
     };
     
     // Any functions defined in this return statement are considered public
@@ -150,6 +195,7 @@ define(['./admissions', './utilities'], function(admissions, utilities) {
     return {
         applyFilter : applyFilter,
         filterBy : filterBy,
+        showInfoWindow : showInfoWindow,
         Layer : Layer
     };
 });
