@@ -88,20 +88,6 @@ define([], function() {
         return response["rows"][0][5].toString();
     };
 
-    /**
-      * majorToCode
-      *
-      *  Converts the name of a major, i.e. 'Computer Science', to a major code
-      *
-      * @param major string containing the name of an acamdemic major
-      * @return integer representing the code of the major
-      *
-      */
-    var majorToCode = function() {
-        //TODO: someone find how the majors map to codes in the DB
-        return 0;
-    }
-
     // Any functions defined in this return statement are considered public
     // functions by RequireJS, and accessible through the namespace that
     // is attached to this module when loaded in other files.

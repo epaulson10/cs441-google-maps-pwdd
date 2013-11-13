@@ -122,7 +122,7 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                 filter = "Gender MATCHES '" + inputs[0] + "'";
                 break;
             case form.Major:
-                filter = 'Planned_Major_Code = ' + admissions.majorToCode(inputs[0]);
+                filter = "Planned_Major_Code = '" + inputs[0] +  "'";
                 break;
             case form.SATVerbal:
                 filter = 'SAT_Verbal >= ' + inputs[0] + ' AND SAT_Verbal <= ' + inputs[1];
