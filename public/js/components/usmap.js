@@ -216,6 +216,16 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
     */
     var initialize = function() {
 
+        // Register the enter key to press the lookup button
+        document.onkeydown = function (e){
+            var keyCode = (e.keyCode ? e.keyCode : e.which);
+            
+            // 13 is the keycode for the enter key
+            if (keyCode == '13'){
+                document.getElementById('lookupButton').click();
+            }
+        };
+
         // Set the Google API key for this namespace.
         apikey = 'AIzaSyDPIDblZh-H55gEkg7u6KVry1OZ-pgGpsQ';
 
