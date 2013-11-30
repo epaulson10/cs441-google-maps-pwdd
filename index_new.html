@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>UP Data Visualization Tool</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="public/css/bootstrap.min.css" rel="stylesheet">
+        <link href="public/css/style.css" rel="stylesheet" type="text/css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <h2>Admissions Data Visualization Tool</h2>
+                <p id="errormessage"></p>
+            </div>
+            <div class="row" id="map_row">
+                <div class="col-md-3">
+                    <h3>Search by:</h3>
+                    <p>
+                    <select id="search_type">
+                        <option value="State">State</option>
+                        <option value="City">City</option>
+                        <option value="Zip">Zip</option>
+                        <option value="Code">CEEB</option>
+                        <option value="HighSchool">High School</option>
+                    </select>
+                    <input type="text" id="search_term" value="OR">
+                    <div id="search_years">
+                        <input type="checkbox" name="year" value="2011" checked>2011</input>
+                        <input type="checkbox" name="year" value="2012" checked>2012</input>
+                    </div>
+                    </p>
+                    <h3>Filter By:</h3>
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="radio" name="filter" value="none" checked>
+                                None
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="filter" value="gpa">
+                                GPA
+                            </td>
+                            <td>
+                                <input type="text" id="gpa_min" name="gpa_min" class="range" value="0.0">
+                                -
+                                <input type="text" id="gpa_max" name="gpa_max" class="range" value ="4.0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="filter" value="gender">
+                                Gender
+                            </td>
+                            <td>
+                                <select id="gender_select" name="gender_select">
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="filter" value="major">
+                                Major
+                            </td>
+                            <td>
+                                <select id="major_select" name="major_select" style="width: 150px">
+                                    <option value="Chemistry">Chemistry</option>
+                                    <option value="Chemistry: ACS">Chemistry: ACS</option>
+                                    <option value="Chemistry: Biochemistry">Chemistry: Biochemistry</option>
+                                    <option value="Chemistry: Biochemistry">Chemistry: Biochemistry</option>
+                                    <option value="DNP Doctor of Nursing Practice">DNP Doctor of Nursing Practice</option>
+                                    <option value="Drama">Drama</option>
+                                    <option value="English">English</option>
+                                    <option value="Fine Arts">Fine Arts</option>
+                                    <option value="History">History</option>
+                                    <option value="Library Science">Library Science</option>
+                                    <option value="Mathematics">Mathematics</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Non-Matriculating">Non-Matriculating</option>
+                                    <option value="Nursing">Nursing</option>
+                                    <option value="Philosophy">Philosophy</option>
+                                    <option value="Physics">Physics</option>
+                                    <option value="Political Science">Political Science</option>
+                                    <option value="Political Science">Political Science</option>
+                                    <option value="Social Work">Social Work</option>
+                                    <option value="Sociology">Sociology</option>
+                                    <option value="Sociology:Criminal Justice">Sociology:Criminal Justice</option>
+                                    <option value="Spanish">Spanish</option>
+                                    <option value="Theology">Theology</option>
+                                    <option value="Undeclared">Undeclared</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <CAPTION><EM>SAT Scores:</EM></CAPTION>
+                        <tr>
+                            <td>
+                                <input type="radio" name="filter" value="verbal">
+                                Verbal
+                            </td>
+                            <td>
+                                <input type="text" id="satv_min" name="satv_min" class="range" value="0">
+                                -
+                                <input type="text" id="satv_max" name="satv_max" class="range" value="800">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="filter" value="math">
+                                Math
+                            </td>
+                            <td>
+                                <input type="text" id="satm_min" name="satm_min" class="range" value="0">
+                                -
+                                <input type="text" id="satm_max" name="satm_max" class="range" value ="800">
+                            </td>
+                        </tr>
+                    </table>
+                    </br></br>
+                    <input type="button" id="lookupButton" value="Lookup">
+                </div>
+                <div id="contig_us_map_canvas" class="col-md-6">
+                </div>
+                <div class="col-md-3" id="side_bar">
+                    <div id="top_schools">
+                    </div>
+                    <div id="info_box">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--
+        The following script tag utilizes RequireJS to perform AMD loading of
+        the JavaScript files listed in main.js
+
+        The data-main attribute tells RequireJS which file will be used to
+        bootstrap our environment. In this case it will look for main.js
+        in the public/js/ directory (the path is relative to the site root).
+        -->
+
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script data-main='main' src='public/js/vendor/require.js'></script>
+
+        <!-- JavaScript at the bottom for fast page loading -->
+
+    </body>
+</html>
+
