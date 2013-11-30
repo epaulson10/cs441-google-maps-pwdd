@@ -37,7 +37,7 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         var years = form.getSearchYears();
         var filter = form.getSelectedFilter();
 
-        // Did the user type anything?
+        // check for that the input is valid
         if(sTerm == "") {
             // Give an error message to the user:
             utilities.getErrorMsgElement().innerHTML = "Error: Please enter something to search for";
@@ -45,10 +45,19 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
             // Clear any error message.
             utilities.getErrorMsgElement().innerHTML = "";
 
+            //check that the input is valid
+            if (!form.checkInput()) {
+                utilities.getErrorMsgElement().innerHTML = "Error: "; 
+                alert('Search Term is not valid!');
+            } else if (!form.checkFilterInput(filter)) {
+                alert('Filter input is not valid!');
+            }
+
             // Create a url for
             // a subsequent GET request to a Google server.
             var terms = sTerm.split(',');
             var term = terms[0];
+
             var eq;
             if (sType != admissions.ZIP && sType != admissions.CEEB) {
                 term = "'" + term + "'";
@@ -66,12 +75,13 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
                     terms[1] = terms[1].replace(/^\s/g, '');
                     query += " AND " + admissions.STATE + eq + "'" + terms[1] + "'";
                 }
-            } 
+            }
 
             var url = "https://www.googleapis.com/fusiontables/v1/query";
             url = url + "?sql=" + query;
             url = url + "&key=" + apikey;
-            console.log(url);
+            console.log('First request URL: '+ url);
+
             function handleResponse() {
                 if(httpRequest.readyState === 4) {
                     if(httpRequest.status === 200) {

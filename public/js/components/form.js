@@ -7,7 +7,7 @@
  * @author Kyle DeFrancia
  * @version 11/9/13.  Created this file -Kyle
  */
-define([], function(){
+define(['./admissions'], function(admissions){
 
     var Year = 'search_years';
     var GPA = 'gpa';
@@ -15,6 +15,7 @@ define([], function(){
     var Major = 'major';
     var SATVerbal = 'verbal';
     var SATMath = 'math';
+    var NoFilter = 'no_filter';
 
     /**
       * getSearchTerm()
@@ -29,8 +30,8 @@ define([], function(){
 
         return document.getElementById("search_term").value;
     };
-	 
-	 /**
+     
+     /**
       * setSearchTerm()
       *
       * This function sets the search term based on the parameter passed in.
@@ -38,9 +39,9 @@ define([], function(){
       * @param value - The new search term
       * @return void
       */
-	var setSearchTerm = function(value) {
-	    document.getElementById("search_term").value = value;
-	}
+    var setSearchTerm = function(value) {
+        document.getElementById("search_term").value = value;
+    }
 
     /**
       * getSearchType()
@@ -55,8 +56,8 @@ define([], function(){
         
         return document.getElementById("search_type").value;
     }
-	
-	/**
+    
+    /**
       * setSearchType()
       *
       * This function sets the search type based on the parameter passed in.
@@ -64,9 +65,89 @@ define([], function(){
       * @param value - The new search type
       * @return void
       */
-	var setSearchType = function(value) {
-	    document.getElementById("search_type").value = value;
-	}
+    var setSearchType = function(value) {
+        document.getElementById("search_type").value = value;
+    }
+
+    /**
+      * checkInput()
+      *
+      * Determine if the text entered by the user is in a proper format.
+      *
+      * @return true if the search term input is valid, false if it is not
+      */
+    var checkInput = function() {
+
+        var sType = getSearchType();
+        var sTerm = getSearchTerm();
+
+        var acceptable;
+        switch(sType) {
+            case admissions.CEEB:
+                acceptable = /^[0-9]{6}$/;
+                break;
+            case admissions.HSNAME:
+                acceptable = /^[\w ]+$|^[\w ]+, [A-Z]{2}$/;
+                break; 
+            case admissions.ZIP:
+                acceptable = /^[0-9]{5}$/;
+                break;
+            case admissions.STATE:
+                acceptable = /^[A-Z]{2}$/;
+                break;
+            case admissions.CITY:
+                acceptable = /^[\w ]+$|^[\w ]+, [A-Z]{2}$/;
+                break;
+        }
+
+        // test if the input matches an acceptable format
+        return acceptable.test(sTerm);
+    }
+
+    /**
+      * checkFilterInput()
+      *
+      * Determine if the user input for a filter is in a proper format.
+      *
+      * @return true if the filter input is valid, false if it is not
+      */
+    var checkFilterInput = function(filter) {
+
+        var inputs = getFilterVals(filter);
+        var acceptable;
+
+        switch(filter) {
+            case GPA:
+                // inputs = [min, max]
+                var valid = /^[0-9]{1,2}$|^[0-9]{1,2}.[0-9]+$/;
+                acceptable = (valid.test(inputs[0]) && valid.test(inputs[1]) && (inputs[0] <= inputs[1]));
+                break;
+            case Gender:
+                // inputs = [gender]
+                var valid = /M|F/;
+                acceptable = valid.test(inputs[0]); 
+                break;
+            case Major:
+                // inputs = [major]
+                var valid = ['Chemistry','Chemistry: ACS','Chemistry: Biochemistry','DNP Doctor of Nursing Practice',
+                            'Drama','English','Fine Arts','History','Library Science','Mathematics','Music',
+                            'Non-Matriculating','Nursing','Philosophy','Physics','Political Science','Social Work',
+                            'Sociology','Sociology:Criminal Justice','Spanish','Theology','Undeclared'];
+                acceptable = (valid.indexOf(inputs[0]) > -1);
+                break;
+            case SATMath:
+            case SATVerbal:
+                // inputs = [min, max]
+                var valid = /^[0-9]+$/;
+                acceptable = (valid.test(inputs[0]) && valid.test(inputs[1]) && (inputs[0] <= inputs[1]));
+                break;
+            case NoFilter:
+            default:
+                acceptable = true;
+        }
+
+        return acceptable;
+    }
 
     /**
       * getSearchYears()
@@ -139,6 +220,7 @@ define([], function(){
                 rtnVal.push(document.getElementById('satm_min').value);
                 rtnVal.push(document.getElementById('satm_max').value);
                 break;
+            case NoFilter:
             default:
         }
 
@@ -168,6 +250,7 @@ define([], function(){
     // functions by RequireJS, and accessible through the namespace that
     // is attached to this module when loaded in other files.
     return {
+        NoFilter : NoFilter,
         GPA : GPA,
         Gender : Gender,
         Major : Major,
@@ -176,10 +259,11 @@ define([], function(){
         getSearchYears : getSearchYears,
         getSearchTerm : getSearchTerm,
         getSearchType : getSearchType,
-		setSearchTerm : setSearchTerm,
-		setSearchType : setSearchType,
+    	setSearchTerm : setSearchTerm,
+    	setSearchType : setSearchType,
         getSelectedFilter : getSelectedFilter,
         getFilterVals : getFilterVals,
-        filterInputLength : filterInputLength
+        checkInput : checkInput,
+        checkFilterInput : checkFilterInput,
     };
 });

@@ -130,7 +130,7 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                 //it really is SAT_MAth in the database
                 filter = 'SAT_MAth >= ' + inputs[0] + ' AND SAT_MAth <= ' + inputs[1];
                 break;
-            case form.None:
+            case form.NoFilter:
             default:
                 filter = '';
         }
