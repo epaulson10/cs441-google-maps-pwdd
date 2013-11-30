@@ -4,11 +4,11 @@
  *  This file has these main responsibilities:
  *  1. Initialize the main page, index.html.
  *  2. Setup all the listeners for the main page.
- *  3. Grab values of HTML elements for other parts of the application.
+ *  3. Set up map every time the lookup button is pressed.
  *
- *  @author Tanya L. Crenshaw
- *  @version 10/30/13.  Fixed formatting. Changes made by Kyle, Nick, and Erik
- *  @version 11/3/13. Updated fusion table ID and edited fusion table query.  Joe Devlin
+ *  @authors Tanya L. Crenshaw, Kyle DeFrancia, Joe Devlin, Erik Paulson, Nick
+ *  @version 11/29/13. Add checks and error messages to ensure valid input.
+ * 
  */
 
 define(['./utilities', './admissions', './layers', './calculate', './form'], function(utilities, admissions, layers, calculate, form) {
@@ -40,110 +40,110 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         // check for that the input is valid
         if(sTerm == "") {
             // Give an error message to the user:
-            utilities.getErrorMsgElement().innerHTML = "Error: Please enter something to search for";
+            utilities.getInfoBoxElement().innerHTML = "Error: Please enter something to search for";
+            return;
+        } else if(!form.checkInput()) {
+            utilities.getInfoBoxElement().innerHTML = "Error: Invalid search term.  Remember to use state abbreviatons.";
+            return;
+        } else if(!form.checkFilterInput(filter)) {
+            utilities.getInfoBoxElement().innerHTML = "Error: Invalid filter input.  Check the range you specified.";
+            return;
+        }
+
+        // Clear any error message.
+        utilities.getErrorMsgElement().innerHTML = "";
+
+        // Create a url for
+        // a subsequent GET request to a Google server.
+        var terms = sTerm.split(',');
+        var term = terms[0];
+
+        var eq;
+        if (sType != admissions.ZIP && sType != admissions.CEEB) {
+            term = "'" + term + "'";
+            eq = ' CONTAINS IGNORING CASE ';
         } else {
-            // Clear any error message.
-            utilities.getErrorMsgElement().innerHTML = "";
+            eq = ' = ';
+        }
 
-            //check that the input is valid
-            if (!form.checkInput()) {
-                utilities.getErrorMsgElement().innerHTML = "Error: "; 
-                alert('Search Term is not valid!');
-            } else if (!form.checkFilterInput(filter)) {
-                alert('Filter input is not valid!');
+        var query = "SELECT * FROM " + layerArray[0].eID + " WHERE " + sType + eq + term;
+
+        // search by City or Highschool Name might also include a state like "Portland, OR"
+        if (sType == admissions.HSNAME || sType == admissions.CITY) {
+            if (terms[1]) {
+                //trim off the leading space
+                terms[1] = terms[1].replace(/^\s/g, '');
+                query += " AND " + admissions.STATE + eq + "'" + terms[1] + "'";
             }
+        }
 
-            // Create a url for
-            // a subsequent GET request to a Google server.
-            var terms = sTerm.split(',');
-            var term = terms[0];
+        var url = "https://www.googleapis.com/fusiontables/v1/query";
+        url = url + "?sql=" + query;
+        url = url + "&key=" + apikey;
+        console.log('First request URL: '+ url);
 
-            var eq;
-            if (sType != admissions.ZIP && sType != admissions.CEEB) {
-                term = "'" + term + "'";
-                eq = ' CONTAINS IGNORING CASE ';
-            } else {
-                eq = ' = ';
-            }
+        function handleResponse() {
+            if(httpRequest.readyState === 4) {
+                if(httpRequest.status === 200) {
+                    // The code reaches this point because the Google server
+                    // responded with some useful data.
+                    var response = JSON.parse(httpRequest.responseText);
+                    console.log(response);
+                    if(response["rows"] != undefined) {
+                        // Set the zoom.
+                        var zoomLvl = getZoomLevel(sType);
+                        layerArray[0].map.setZoom(zoomLvl);
 
-            var query = "SELECT * FROM " + layerArray[0].eID + " WHERE " + sType + eq + term;
+                        var hsName = admissions.getHighSchoolName(response);
+                        var hsAddress = admissions.getHighSchoolAddress(response);
+                        var zipcode = admissions.getZipcode(response);
+                        var city = admissions.getCity(response);
+                        var state = admissions.getState(response);
+                        var ceeb = admissions.getCEEB(response);
 
-            // search by City or Highschool Name might also include a state like "Portland, OR"
-            if (sType == admissions.HSNAME || sType == admissions.CITY) {
-                if (terms[1]) {
-                    //trim off the leading space
-                    terms[1] = terms[1].replace(/^\s/g, '');
-                    query += " AND " + admissions.STATE + eq + "'" + terms[1] + "'";
-                }
-            }
-
-            var url = "https://www.googleapis.com/fusiontables/v1/query";
-            url = url + "?sql=" + query;
-            url = url + "&key=" + apikey;
-            console.log('First request URL: '+ url);
-
-            function handleResponse() {
-                if(httpRequest.readyState === 4) {
-                    if(httpRequest.status === 200) {
-                        // The code reaches this point because the Google server
-                        // responded with some useful data.
-                        var response = JSON.parse(httpRequest.responseText);
-                        console.log(response);
-                        if(response["rows"] != undefined) {
-                            // Set the zoom.
-                            var zoomLvl = getZoomLevel(sType);
-                            layerArray[0].map.setZoom(zoomLvl);
-
-                            var hsName = admissions.getHighSchoolName(response);
-                            var hsAddress = admissions.getHighSchoolAddress(response);
-                            var zipcode = admissions.getZipcode(response);
-                            var city = admissions.getCity(response);
-                            var state = admissions.getState(response);
-                            var ceeb = admissions.getCEEB(response);
-
-                            // Center the map.
-                            var center;
-                            switch(sType) {
-                                case admissions.CEEB:
-                                case admissions.HSNAME:
-                                    center = hsAddress;
-                                    break; 
-                                case admissions.ZIP:
-                                    center = zipcode;
-                                    break;
-                                case admissions.STATE:
-                                    center = state;
-                                    break;
-                                case admissions.CITY:
-                                    center = city + " " + state;
-                                    break;
-                            }
-                            center = center + " , United States of America";
-                            console.log(center);
-                            centerAt(layerArray[0].map, center, geocoder);
-
-                            // Filter the layer to display only the desired schools
-                            layers.filterBy.call(layerArray[0], sType, sTerm, eq);
-                            
-                            //have only 1 requestor, so have to link requests
-                            utilities.getInfoBoxElement().innerHTML = 'Calculating...';
-
-                            calculate.getAppInfo(sType, sTerm, years, filter, ceeb);
-
-                            utilities.getTopSchoolsBox().innerHTML = 'Calculating...';
-                            calculate.getAppInfo(sType, sTerm, null, ceeb);
-
-
-                        } else {
-                            // Indicate to the user their search term was not found 
-                            //TODO: figure out why getErrorElement doesn't work
-                            utilities.getInfoBoxElement().innerHTML = "Cannot locate " + sType + ": " + sTerm + ".";
-                            utilities.getTopSchoolsBox().innerHTML = "Cannot locate " + sType + ": " + sTerm + ".";
+                        // Center the map.
+                        var center;
+                        switch(sType) {
+                            case admissions.CEEB:
+                            case admissions.HSNAME:
+                                center = hsAddress;
+                                break; 
+                            case admissions.ZIP:
+                                center = zipcode;
+                                break;
+                            case admissions.STATE:
+                                center = state;
+                                break;
+                            case admissions.CITY:
+                                center = city + " " + state;
+                                break;
                         }
+                        center = center + " , United States of America";
+                        console.log(center);
+                        centerAt(layerArray[0].map, center, geocoder);
+
+                        // Filter the layer to display only the desired schools
+                        layers.filterBy.call(layerArray[0], sType, sTerm, eq);
+                        
+                        //have only 1 requestor, so have to link requests
+                        utilities.getInfoBoxElement().innerHTML = 'Calculating...';
+
+                        calculate.getAppInfo(sType, sTerm, years, filter, ceeb);
+
+                        utilities.getTopSchoolsBox().innerHTML = 'Calculating...';
+                        calculate.getAppInfo(sType, sTerm, null, ceeb);
+
+
+                    } else {
+                        // Indicate to the user their search term was not found 
+                        //TODO: figure out why getErrorElement doesn't work
+                        utilities.getInfoBoxElement().innerHTML = "Cannot locate " + sType + ": " + sTerm + ".";
+                        utilities.getTopSchoolsBox().innerHTML = "Cannot locate " + sType + ": " + sTerm + ".";
                     }
                 }
             }
-        }
+        }//handleResponse
+        
         // Send the GET Request to the Google Server
         utilities.sendRequest(url, handleResponse);
     };

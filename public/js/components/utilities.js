@@ -111,19 +111,6 @@ define([], function(){
     }
 
   /**
-    * getErrorMsgElement()
-    *
-    * This function gets the element from the page where error messages
-    * should be placed.
-    *
-    * @param void
-    * @return The html element with id "errormessage"
-    */
-    var getErrorMsgElement = function() {
-        return document.getElementById("errormessage");
-    };
-
-  /**
     * getInfoBoxElement()
     *
     * This function gets the info box element from the page.
