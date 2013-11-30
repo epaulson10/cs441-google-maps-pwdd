@@ -278,6 +278,11 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         utilities.addEvent(document.getElementById('lookupButton'), 'click', function() {
             return lookup(layerArray, geocoder);
         });
+
+        // Attach the autoSelectFilter() function to the filter inputs
+        utilities.forEach(form.getAllFilterInputs(), function(i) {
+            document.getElementById(i).onchange = function() { form.autoSelectFilter(i); };
+        });
     };
 
     // Any functions defined in this return statement are considered public

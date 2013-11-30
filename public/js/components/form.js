@@ -228,21 +228,51 @@ define(['./admissions'], function(admissions){
     }
 
     /**
-      * filterInputLength
+      * autoSelectFilter()
       *
-      * Get the number of input elements there are for a given filter in 
-      * index.html. For example, the GPA filter has an input length of 2 and
-      * the Gender filter has a length of 1.
-      *
-      * @param filter the filter
-      * @param an integer representing the length of the return value
-      *         of getFilterVals.
+      * Automatically change the selected filter when a its inputs are changed.
       *
       */
-    var filterInputLength = function(filter) {
+    var autoSelectFilter = function(input) {
 
-        var inputs = getFilterVals(filter);
-        return inputs.length;
+        console.log('Change detected! Here is what I got: ');
+        console.log(input);
+
+        switch(input) {
+            case 'gpa_min':
+            case 'gpa_max':
+                document.getElementById('gpa_filter').checked = true;
+                break;
+            case 'major_select':
+                document.getElementById('major_filter').checked = true;
+                break;
+            case 'gender_select':
+                document.getElementById('gender_filter').checked = true;
+                break;
+            case 'satv_min':
+            case 'satv_max':
+                document.getElementById('satv_filter').checked = true;
+                break;
+            case 'satm_min':
+            case 'satm_max':
+                document.getElementById('satm_filter').checked = true;
+                break;
+            default:
+        }
+    }
+
+    var getAllFilterInputs = function() {
+        var inputs = [];
+        inputs.push('gpa_min');
+        inputs.push('gpa_max');
+        inputs.push('gender_select');
+        inputs.push('major_select');
+        inputs.push('satv_min');
+        inputs.push('satv_max');
+        inputs.push('satm_min');
+        inputs.push('satm_max');
+
+        return inputs;
     }
 
 
@@ -265,5 +295,7 @@ define(['./admissions'], function(admissions){
         getFilterVals : getFilterVals,
         checkInput : checkInput,
         checkFilterInput : checkFilterInput,
+        getAllFilterInputs : getAllFilterInputs,
+        autoSelectFilter : autoSelectFilter
     };
 });

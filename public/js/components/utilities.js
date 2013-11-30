@@ -240,7 +240,6 @@ define([], function(){
     return {
         addEvent : addEvent,
         forEach : forEach,
-        getErrorMsgElement : getErrorMsgElement,
         getInfoBoxElement : getInfoBoxElement,
 		getTopSchoolsBox : getTopSchoolsBox,
 		getHSNameByCeeb : getHSNameByCeeb,
