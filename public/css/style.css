@@ -1,101 +1,57 @@
-html {
-	height: 100%
-}
-body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	clear: both;
-	font-family: "Bryant", "Gill Sans", sans-serif;
-}
-h1 {
-	text-align: left;
-	font-size: 12pt;
-	text-decoration: none;
-	font-weight: normal;
-	margin-bottom: 0.1em;
-}
-a {
-	color: blue;
-}
-p {
-	margin-top: 0.1em;
-	font-size: 10pt;
-}
-svg {
-	background-color: #FFC;
-}
-select {
-	width: 100px;
-}
-.filterPanel {
-	width: 150px;
-	height: 50px;
-	margin: 1px;
-	float: left;
-}
-.stacked {
-	padding: 2px;
-}
-.side_by_side {
-	display: inline-block;
-	vertical-align: top;
+html, body, .container, #contig_us_map_canvas.col-md-6 {
+    height: 100%;
 }
 
-.range{
+.col-md-6 {
+    height:100%;
+}
+
+.range {
    width: 40px;
+   height: 100%;
    margin: 0 5px ;
    display:inline-block;
 }
 
-#filter {
-   display: inline-block;
+input.range {
+    height: 28px;
 }
-#left_menu_bar {
-	width: 280px;
-	height: 600px;
-	background: #d6dee9
+
+a {
+    color: white;
 }
+
+#map_row {
+    height: 90%;
+}
+
+#left_col {
+    background: #AB87FA;
+    height: 100%;
+}
+
+#left_side_bar {
+    line-height: 200%;
+}
+
+#right_col {
+    height:100%;
+    background: #AB87FA;
+}
+
+#top_schools {
+    height: 65%;
+    line-height: 100%;
+}
+
 #contig_us_map_canvas {
-	width: 500px;
-	height: 450px;
-}
-#wrap {
-	height: 100%;
-	width: 1200px;
-	margin: 0 auto
-}
-#top {
-	margin-top: 20px;
-	width: 800px;
-	height: 20px;
-}
-#contig_us_map_canvas {
-	width: 500px;
-	height: 450px;
-}
-#top_schools{
-   width: 280px;
-	height: 600px;
-	background: #d6dee9
-}
-#display_box{
-   width: 500px;
-   height: 145px;
-   background: #d6dee9;
-   margin-top: 5px;
-
+    height: 100%;
 }
 
-#filter_section {
-	margin: 150px 0;
+#info_box {
+    height: 35%;
 }
 
-#panels {
-	margin-top: 10px;
+#search_term {
+    height: 28px;
 }
-
-#SAT_group{
-   margin-left: 15px;
-}
-

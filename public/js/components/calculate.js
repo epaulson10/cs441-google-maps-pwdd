@@ -192,10 +192,10 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                     } 
 					
                     //string with all the application info we need to display
-                    var temp = "Applied : "+tApplied+"<br>Accepted : " + tAccepted +
+                    var temp =  "Applied : "+tApplied+"<br>Accepted : " + tAccepted +
                                 "<br>Confirmed : " + tConfirmed + "<br>Enrolled : " + tEnrolled; 
                     
-                    utilities.getInfoBoxElement().innerHTML ="<div id = infoBoxHeader> Searched by " + search + " : " + term +"<br><br></div>" + temp; 
+                    utilities.getInfoBoxElement().innerHTML ="<h3>Applicant Info</h3><div id = infoBoxHeader> Searched by " + search + " : " + term +"<br><br></div>" + temp; 
 
                     //because have only one requester have to link all of these together
 					topSchools(response);
@@ -282,7 +282,7 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
 		
 		//add header to field
 		element.innerHTML = "<h3>Top Schools</h3>";
-		
+	    var filterType = form.getSelectedFilter();
 		// Storable[i] looks like:
 		// [CeebCode, ArrayPointer]      0               1          2
 		//            ArrayPointer ->[#applied,High School name, ceeb]
@@ -291,7 +291,7 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
 				break;
 			var newPar =document.createElement("p");
 			var ceebParam = sortable[i][0];
-			newPar.innerHTML = "<a href = #>" + (i+1) + ". " +  sortable[i][1][1] + ": " + sortable[i][1][0] + "</a>" + "<br>";
+			newPar.innerHTML = "<a href = #>" + (i+1) + ". " +  sortable[i][1][1] + "</a>: " + sortable[i][1][0] + " students.<br>";
 			newPar.id = ceebParam;
 			element.appendChild(newPar);
 			
