@@ -148,6 +148,10 @@ define([], function(){
 
         return document.getElementById("top_schools");
     };
+	//add function header
+	var getTextBox = function() {
+		return document.getElementById("search_term");
+	};
 	
 	/**
     * getHSNameByCeeb()
