@@ -17,6 +17,10 @@ input.range {
     height: 28px;
 }
 
+.input-large {
+	width:250px;
+}
+
 a {
     color: white;
 }
@@ -53,6 +57,6 @@ a {
 }
 
 #search_term {
-    height: 28px
-	size: 40
+    height: 28px;
+	size: 40 !important;
 }

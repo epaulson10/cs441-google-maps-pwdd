@@ -222,7 +222,7 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
 				textBox.placeholder = "CEEB Code. e.g 380630";
 				break;
             case admissions.HSNAME:
-				textBox.placeholder = "HS,STATE. e.g Central Catholic High School, OR";
+				textBox.placeholder = "HS,STATE. e.g Central Catholic, OR";
 				break;
             case admissions.STATE:
 				textBox.placeholder = "State Abbrev. e.g 'OR'";
