@@ -67,6 +67,7 @@ h3 {
 #top_schools {
     height: 65%;
     line-height: 100%;
+    overflow: auto;
 }
 
 #contig_us_map_canvas {
@@ -75,7 +76,7 @@ h3 {
 }
 
 #info_box {
-    height: 35%;
+    line-height:100%;
 }
 
 #filterDescription {
