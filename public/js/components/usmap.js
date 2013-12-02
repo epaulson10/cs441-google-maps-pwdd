@@ -124,12 +124,7 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
                         
                         //have only 1 requestor, so have to link requests
                         utilities.getInfoBoxElement().innerHTML = 'Calculating...';
-
                         calculate.getAppInfo(sType, sTerm, years, filter, ceeb);
-
-                        utilities.getTopSchoolsBox().innerHTML = 'Calculating...';
-                        calculate.getAppInfo(sType, sTerm, null, ceeb);
-
 
                     } else {
                         // Indicate to the user their search term was not found 
@@ -209,8 +204,8 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
             }
         });
     };
-	
-	/**
+    
+    /**
     *  changeDefaultText()
     *
     *  Provide a hint as to the expected format when the user selects a new search type
@@ -218,31 +213,31 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
     *  @param void
     *  @return void
     */
-	var changeDefaultText = function() {
-		//get the search type from the form
-		var searchType = form.getSearchType();
-		//get the textbox element from the html
-		var textBox = document.getElementById('search_term');
-		
-		switch(searchType) {
+    var changeDefaultText = function() {
+        //get the search type from the form
+        var searchType = form.getSearchType();
+        //get the textbox element from the html
+        var textBox = document.getElementById('search_term');
+        
+        switch(searchType) {
             case admissions.ZIP:
-				textBox.placeholder = "5 digit Zip. e.g 97103";
-				break;
+                textBox.placeholder = "5 digit Zip. e.g 97103";
+                break;
             case admissions.CEEB:
-				textBox.placeholder = "CEEB Code. e.g 380630";
-				break;
+                textBox.placeholder = "CEEB Code. e.g 380630";
+                break;
             case admissions.HSNAME:
-				textBox.placeholder = "HS,STATE. e.g Central Catholic, OR";
-				break;
+                textBox.placeholder = "HS,STATE. e.g Central Catholic, OR";
+                break;
             case admissions.STATE:
-				textBox.placeholder = "State Abbrev. e.g OR";
-				break;
+                textBox.placeholder = "State Abbrev. e.g OR";
+                break;
             case admissions.CITY:
-				textBox.placeholder = "City. e.g Portland";
-				break;
+                textBox.placeholder = "City. e.g Portland";
+                break;
         }
-	};
-	
+    };
+    
 
   /**
     *  initialize()
@@ -305,7 +300,7 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         var layerArray = new Array();
         layerArray.push(schoolLayer);
 
-		
+        
         // Attach the function lookup() to the lookupButton on the main page.
         utilities.addEvent(document.getElementById('lookupButton'), 'click', function() {
             return lookup(layerArray, geocoder);
@@ -315,10 +310,10 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         utilities.forEach(form.getAllFilterInputs(), function(i) {
             document.getElementById(i).onchange = function() { form.autoSelectFilter(i); };
         });
-		
-		utilities.addEvent(document.getElementById('search_type'),'change', function() { 
-			return changeDefaultText();
-		});
+        
+        utilities.addEvent(document.getElementById('search_type'),'change', function() { 
+            return changeDefaultText();
+        });
     };
 
     // Any functions defined in this return statement are considered public
@@ -328,7 +323,7 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         lookup : lookup,
         getZoomLevel : getZoomLevel,
         centerAt : centerAt,
-		changeDefaultText : changeDefaultText,
+        changeDefaultText : changeDefaultText,
         initialize : initialize
     };
 });
