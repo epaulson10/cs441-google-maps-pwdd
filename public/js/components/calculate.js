@@ -18,8 +18,8 @@
 define(['./usmap','./utilities','./admissions', './form'], function(usmap, utilities, admissions, form) {
     
     //constants
-    //https://www.google.com/fusiontables/data?docid=1-kMbG4vqpghLbiIgEEDwi8JT05JiUAMEWwYO18M#rows:id=1
-    var APP_TABLE_ID = '1TwmkByLOqdTQqwmYb7dIC6ygGDlQAjSyWNSCZUg';
+    //https://www.google.com/fusiontables/data?docid=12qPX7flw9bcVqdbAgGAPHLtSXWjjVdtBqsJ1ZrY
+    var APP_TABLE_ID = '12qPX7flw9bcVqdbAgGAPHLtSXWjjVdtBqsJ1ZrY';
     var CEEB = 2;
     var APPLIED = 8;
     var ACCEPTED = 9;

@@ -234,8 +234,8 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         // Create the httpRequestor for this namespace.
         utilities.makeRequestor();
 
-        //https://www.google.com/fusiontables/DataSource?docid=1wEej4K9DkB_U3PeUn_f-hYK6mRNwgxqItc0iuNE#rows:id=1
-        var schoolEID = '1wEej4K9DkB_U3PeUn_f-hYK6mRNwgxqItc0iuNE';
+        //https://www.google.com/fusiontables/DataSource?docid=1bU_c9DQExthlyR_zY6Qy-SyFYDIPbTKmilgV-hc
+        var schoolEID = '1bU_c9DQExthlyR_zY6Qy-SyFYDIPbTKmilgV-hc';
 
         // Instatiate a new geocoder service
         var geocoder = new google.maps.Geocoder();
