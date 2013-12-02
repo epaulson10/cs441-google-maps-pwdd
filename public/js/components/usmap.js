@@ -40,13 +40,13 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         // check for that the input is valid
         if(sTerm == "") {
             // Give an error message to the user:
-            utilities.getInfoBoxElement().innerHTML = "Error: Please enter something to search for";
+            utilities.getInfoBoxElement().innerHTML = '<div id="errormessage">Error: Please enter something to search for</div>';
             return;
         } else if(!form.checkInput()) {
-            utilities.getInfoBoxElement().innerHTML = "Error: Invalid search term.  Remember to use state abbreviatons.";
+            utilities.getInfoBoxElement().innerHTML = '<div id="errormessage">Error: Invalid search term.  Remember to use state abbreviatons.</div>';
             return;
         } else if(!form.checkFilterInput(filter)) {
-            utilities.getInfoBoxElement().innerHTML = "Error: Invalid filter input.  Check the range you specified.";
+            utilities.getInfoBoxElement().innerHTML = '<div id="errormessage">Error: Invalid filter input.  Check the range you specified.</div>';
             return;
         }
 
@@ -129,8 +129,8 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
                     } else {
                         // Indicate to the user their search term was not found 
                         //TODO: figure out why getErrorElement doesn't work
-                        utilities.getInfoBoxElement().innerHTML = "Cannot locate " + sType + ": " + sTerm + ".";
-                        utilities.getTopSchoolsBox().innerHTML = "Cannot locate " + sType + ": " + sTerm + ".";
+                        utilities.getInfoBoxElement().innerHTML = '<div id="errormessage">Error: Cannot locate ' + sType + ': ' + sTerm + '.</div>';
+                        utilities.getTopSchoolsBox().innerHTML = '<div id="errormessage">Error: Cannot locate ' + sType + ': ' + sTerm + '.</div>';
                     }
                 }
             }
@@ -205,40 +205,6 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         });
     };
     
-    /**
-    *  changeDefaultText()
-    *
-    *  Provide a hint as to the expected format when the user selects a new search type
-    *
-    *  @param void
-    *  @return void
-    */
-    var changeDefaultText = function() {
-        //get the search type from the form
-        var searchType = form.getSearchType();
-        //get the textbox element from the html
-        var textBox = document.getElementById('search_term');
-        
-        switch(searchType) {
-            case admissions.ZIP:
-                textBox.placeholder = "5 digit Zip. e.g 97103";
-                break;
-            case admissions.CEEB:
-                textBox.placeholder = "CEEB Code. e.g 380630";
-                break;
-            case admissions.HSNAME:
-                textBox.placeholder = "HS,STATE. e.g Central Catholic, OR";
-                break;
-            case admissions.STATE:
-                textBox.placeholder = "State Abbrev. e.g OR";
-                break;
-            case admissions.CITY:
-                textBox.placeholder = "City. e.g Portland";
-                break;
-        }
-    };
-    
-
   /**
     *  initialize()
     *
@@ -308,11 +274,19 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
 
         // Attach the autoSelectFilter() function to the filter inputs
         utilities.forEach(form.getAllFilterInputs(), function(i) {
-            document.getElementById(i).onchange = function() { form.autoSelectFilter(i); };
+            utilities.addEvent(document.getElementById(i), 'change', function() {
+                return form.autoSelectFilter(i);
+            });
         });
-        
+       
+        // Attach the changeDefaultTest() function to the search type input 
         utilities.addEvent(document.getElementById('search_type'),'change', function() { 
-            return changeDefaultText();
+            return form.changeDefaultText();
+        });
+
+        // Attach the filterHelp() function to the help link
+        utilities.addEvent(document.getElementById('filter_help'), 'click', function() {
+            return form.filterHelp();
         });
     };
 
@@ -323,7 +297,6 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
         lookup : lookup,
         getZoomLevel : getZoomLevel,
         centerAt : centerAt,
-        changeDefaultText : changeDefaultText,
         initialize : initialize
     };
 });

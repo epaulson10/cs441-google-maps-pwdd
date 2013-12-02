@@ -201,14 +201,14 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
 					topSchools(response);
                 }
                 else{
-                     utilities.getInfoBoxElement().innerHTML = "Cannot find data for " + search + ": " + term + ".";
-                     utilities.getTopSchoolsBox().innerHTML = "<h3>Top Schools</h3>" + "Cannot find data for " + search + ": " + term + ".";
+                     utilities.getInfoBoxElement().innerHTML = '<div id="errormessage">Error: Cannot find data for ' + search + ': ' + term + '.</div>';
+                     utilities.getTopSchoolsBox().innerHTML = '<h3>Top Schools</h3>' + '<div id="errormessage">Error: Cannot find data for ' + search + ': ' + term + '.</div>';
                 }
 				
             }
             else{
-                utilities.getInfoBoxElement().innerHTML = "ERROR: for " + search + ": " + term + ".";
-                utilities.getTopSchoolsBox().innerHTML = "ERROR: for " + search + ": " + term + ".";
+                utilities.getInfoBoxElement().innerHTML = '<div id="errormessage">Error: for ' + search + ': ' + term + '.</div>';
+                utilities.getTopSchoolsBox().innerHTML = '<div id="errormessage">Error: for ' + search + ': ' + term + '.</div>';
             }
         } 
     };

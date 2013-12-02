@@ -6,6 +6,18 @@ body {
     background: #DCDCFC;
 }
 
+a:link {
+    color: blue;
+}
+
+a:visited {
+    color: blue;
+}
+
+a:hover {
+    color: #DB53DB;
+}
+
 .col-md-6 {
     height:100%;
 }
@@ -22,24 +34,20 @@ input.range {
 }
 
 .input-large {
-	width:240px;
+    width:240px;
 }
 
 #left_side_bar, #right_col, #contig_us_map_canvas {
     border: 2px solid;
 }
 
-a {
-    color: #DB53DB;
-}
-
 h2 {
-	margin-left: 15px;
+    margin-left: 15px;
 }
 
 h3 {
     color: #170660;
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 #map_row {
@@ -82,7 +90,7 @@ h3 {
 #filterDescription {
     line-height: 100%;
     font-size: 10pt;
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 #errormessage {
@@ -91,25 +99,34 @@ h3 {
 
 #search_term {
     height: 28px;
-	margin-left:10px;
+    margin-left:10px;
 }
 
 #search_type {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 #search_years {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 #filter_table {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 #lookupButton {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 #lower_filters {
-	margin-left: 10px;
+    margin-left: 10px;
+}
+
+#filter_header {
+    display: inline-block;
+    width: 80%
+}
+
+#filter_help {
+    font-size: 10pt;
 }

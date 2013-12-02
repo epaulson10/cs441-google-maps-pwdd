@@ -122,8 +122,8 @@ define([], function(){
 
         return document.getElementById("info_box");
     };
-	
-	/**
+    
+    /**
     * getTopSchoolsBox()
     *
     * This function gets the top school div located to the right of the map
@@ -134,29 +134,29 @@ define([], function(){
     var getTopSchoolsBox = function() {
         return document.getElementById("top_schools");
     };
-	
-	/**
+    
+    /**
     * getHSNameByCeeb()
     *
     * This function parses a highschool name out of a fusion table query
-	* by a given ceeb.
+    * by a given ceeb.
     *
     * @param response The fusion table response
-	* @param ceeb The highschool whose name we wish to retrieve
+    * @param ceeb The highschool whose name we wish to retrieve
     * @return A string containing the high school name.
     */
-	var getHSNameByCeeb = function(response,ceeb) {
-		if (response["rows"][0] !== undefined){
-			for (var i = 0; i < response["rows"].length; i++) {
-				var debug = response["rows"][i][5].toString();
-				if (response["rows"][i][5] == ceeb){
-					return response["rows"][i][0].toString();
-				}
-			}
-		}
-		else
-			return "No highschool found";
-	};
+    var getHSNameByCeeb = function(response,ceeb) {
+        if (response["rows"][0] !== undefined){
+            for (var i = 0; i < response["rows"].length; i++) {
+                var debug = response["rows"][i][5].toString();
+                if (response["rows"][i][5] == ceeb){
+                    return response["rows"][i][0].toString();
+                }
+            }
+        }
+        else
+            return "No highschool found";
+    };
 
   /**
     * Encrypted IDs for all of the data graciously scraped
@@ -240,8 +240,8 @@ define([], function(){
         addEvent : addEvent,
         forEach : forEach,
         getInfoBoxElement : getInfoBoxElement,
-		getTopSchoolsBox : getTopSchoolsBox,
-		getHSNameByCeeb : getHSNameByCeeb,
+        getTopSchoolsBox : getTopSchoolsBox,
+        getHSNameByCeeb : getHSNameByCeeb,
         makeRequestor : makeRequestor,
         sendRequest : sendRequest,    
         tables : tables

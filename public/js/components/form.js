@@ -105,6 +105,39 @@ define(['./admissions'], function(admissions){
     }
 
     /**
+    *  changeDefaultText()
+    *
+    *  Provide a hint as to the expected format when the user selects a new search type
+    *
+    *  @param void
+    *  @return void
+    */
+    var changeDefaultText = function() {
+        //get the search type from the form
+        var searchType = getSearchType();
+        //get the textbox element from the html
+        var textBox = document.getElementById('search_term');
+        
+        switch(searchType) {
+            case admissions.ZIP:
+                textBox.placeholder = "5 digit Zip. e.g 97103";
+                break;
+            case admissions.CEEB:
+                textBox.placeholder = "CEEB Code. e.g 380630";
+                break;
+            case admissions.HSNAME:
+                textBox.placeholder = "HS,STATE. e.g Central Catholic, OR";
+                break;
+            case admissions.STATE:
+                textBox.placeholder = "State Abbrev. e.g OR";
+                break;
+            case admissions.CITY:
+                textBox.placeholder = "City. e.g Portland";
+                break;
+        }
+    };
+
+    /**
       * checkFilterInput()
       *
       * Determine if the user input for a filter is in a proper format.
@@ -232,11 +265,10 @@ define(['./admissions'], function(admissions){
       *
       * Automatically change the selected filter when a its inputs are changed.
       *
+      * @param input The id of the HTML input element the user changed
+      *
       */
     var autoSelectFilter = function(input) {
-
-        console.log('Change detected! Here is what I got: ');
-        console.log(input);
 
         switch(input) {
             case 'gpa_min':
@@ -261,6 +293,14 @@ define(['./admissions'], function(admissions){
         }
     }
 
+
+    /**
+      * getAllFilterInputs()
+      *
+      * Returns a list ids for all filter input elements.
+      *
+      * @return An array of HTML input element ids
+      */
     var getAllFilterInputs = function() {
         var inputs = [];
         inputs.push('gpa_min');
@@ -276,6 +316,16 @@ define(['./admissions'], function(admissions){
     }
 
 
+    /**
+      * filterHelp()
+      *
+      * Presents the user with help text explaining how filters work
+      *
+      */
+    var filterHelp = function() {
+        alert('What are filters?\n\nApplying a filter will cause the top schools box to populate with the schools that have the most applicants that meet the filter criteria. If no filter is selected, the schools will be ranked by total number of applicants from that school.');
+    }
+
     // Any functions defined in this return statement are considered public
     // functions by RequireJS, and accessible through the namespace that
     // is attached to this module when loaded in other files.
@@ -289,13 +339,15 @@ define(['./admissions'], function(admissions){
         getSearchYears : getSearchYears,
         getSearchTerm : getSearchTerm,
         getSearchType : getSearchType,
-    	setSearchTerm : setSearchTerm,
-    	setSearchType : setSearchType,
+        setSearchTerm : setSearchTerm,
+        setSearchType : setSearchType,
         getSelectedFilter : getSelectedFilter,
         getFilterVals : getFilterVals,
         checkInput : checkInput,
         checkFilterInput : checkFilterInput,
         getAllFilterInputs : getAllFilterInputs,
-        autoSelectFilter : autoSelectFilter
+        autoSelectFilter : autoSelectFilter,
+        filterHelp : filterHelp,
+        changeDefaultText : changeDefaultText
     };
 });
