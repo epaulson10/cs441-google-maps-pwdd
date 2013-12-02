@@ -2,6 +2,10 @@ html, body, .container, #contig_us_map_canvas.col-md-6 {
     height: 100%;
 }
 
+body {
+    background: #DCDCFC;
+}
+
 .col-md-6 {
     height:100%;
 }
@@ -21,8 +25,16 @@ input.range {
 	width:250px;
 }
 
+#left_side_bar, #right_col, #contig_us_map_canvas {
+    border: 2px solid;
+}
+
 a {
-    color: white;
+    color: #DB53DB;
+}
+
+h3 {
+    color: #170660;
 }
 
 #map_row {
@@ -30,17 +42,21 @@ a {
 }
 
 #left_col {
-    background: #AB87FA;
     height: 100%;
 }
 
 #left_side_bar {
     line-height: 200%;
+    height: 100%;
+}
+
+#map_col {
+    margin-left: 0;
+    padding-left: 0;
 }
 
 #right_col {
     height:100%;
-    background: #AB87FA;
 }
 
 #top_schools {
@@ -50,10 +66,20 @@ a {
 
 #contig_us_map_canvas {
     height: 100%;
+    left-padding: 0;
 }
 
 #info_box {
     height: 35%;
+}
+
+#filterDescription {
+    line-height: 100%;
+    font-size: 10pt;
+}
+
+#errormessage {
+    color: red;
 }
 
 #search_term {
