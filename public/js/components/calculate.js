@@ -20,7 +20,7 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
     //constants
     //https://www.google.com/fusiontables/data?docid=1-kMbG4vqpghLbiIgEEDwi8JT05JiUAMEWwYO18M#rows:id=1
     var APP_TABLE_ID = '1TwmkByLOqdTQqwmYb7dIC6ygGDlQAjSyWNSCZUg';
-	var CEEB = 2;
+    var CEEB = 2;
     var APPLIED = 8;
     var ACCEPTED = 9;
     var CONFIRMED = 10;
@@ -170,8 +170,8 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                 
                 //initialize counters to zero
                 var tApplied = tAccepted = tEnrolled = tConfirmed = 0;
-				//Create an array to store ceeb and filter criteria numbers (key value pairs)
-				var schools = {};
+                //Create an array to store ceeb and filter criteria numbers (key value pairs)
+                var schools = {};
                 
                 if(response["rows"] != undefined) {
                     //find the totals for students that have applied, confirmed, enrolled, and accepted
@@ -190,7 +190,7 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                             tConfirmed ++;
                         } 
                     } 
-					
+                    
                     //string with all the application info we need to display
                     var temp =  "Applied : "+tApplied+"<br>Accepted : " + tAccepted +
                                 "<br>Confirmed : " + tConfirmed + "<br>Enrolled : " + tEnrolled; 
@@ -198,13 +198,13 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
                     utilities.getInfoBoxElement().innerHTML ="<h3>Applicant Info</h3><div id = infoBoxHeader> Searched by " + search + " : " + term +"<br><br></div>" + temp; 
 
                     //because have only one requester have to link all of these together
-					topSchools(response);
+                    topSchools(response);
                 }
                 else{
                      utilities.getInfoBoxElement().innerHTML = '<div id="errormessage">Error: Cannot find data for ' + search + ': ' + term + '.</div>';
                      utilities.getTopSchoolsBox().innerHTML = '<h3>Top Schools</h3>' + '<div id="errormessage">Error: Cannot find data for ' + search + ': ' + term + '.</div>';
                 }
-				
+                
             }
             else{
                 utilities.getInfoBoxElement().innerHTML = '<div id="errormessage">Error: for ' + search + ': ' + term + '.</div>';
@@ -258,56 +258,56 @@ define(['./usmap','./utilities','./admissions', './form'], function(usmap, utili
             sortable.sort(function(a,b) {return b[1][0]-a[1][0]});
             console.log(sortable);
 
-			addTopSchools(sortable);
+            addTopSchools(sortable);
         }     
     }
   
   /**
-	* addTopSchools()
-	*
-	* Adds the HTML and listeners to the Top Schools info panel
-	*
-	* @param : storable - data strucure containing the necessary info to 
-	*		   search for a specific High School
-	*/
-	function addTopSchools(sortable){
-		//decide how many schools to show
-		if (sortable.length >10)
-			numTopSchools = 10;
-		else
-			numTopSchools = sortable.length;
-			
-		var displayData = "";
-		var element = utilities.getTopSchoolsBox();
-		
-		//add header to field
-		element.innerHTML = "<h3>Top Schools</h3>";
-	    var filterType = form.getSelectedFilter();
-		// Storable[i] looks like:
-		// [CeebCode, ArrayPointer]      0               1          2
-		//            ArrayPointer ->[#applied,High School name, ceeb]
-		for (var i =0; i < 10; i++) {
-			if (sortable[i] === undefined)
-				break;
-			var newPar =document.createElement("p");
-			var ceebParam = sortable[i][0];
-			newPar.innerHTML = "<a href = #>" + (i+1) + ". " +  sortable[i][1][1] + "</a>: " + sortable[i][1][0] + " students.<br>";
-			newPar.id = ceebParam;
-			element.appendChild(newPar);
-			
-			//when the user clicks on a school, simulate search by CEEB
-			newPar.onclick = function(){
-				console.log("CLICKED " + this.id);
-				var origSearchTerm = form.getSearchTerm();
-				var origSearchType = form.getSearchType();
-				
-				form.setSearchType("Code");
-				form.setSearchTerm(this.id);
-				
-				document.getElementById('lookupButton').click();
-			};
-		}
-	}
+    * addTopSchools()
+    *
+    * Adds the HTML and listeners to the Top Schools info panel
+    *
+    * @param : storable - data strucure containing the necessary info to 
+    *           search for a specific High School
+    */
+    function addTopSchools(sortable){
+        //decide how many schools to show
+        if (sortable.length >10)
+            numTopSchools = 10;
+        else
+            numTopSchools = sortable.length;
+            
+        var displayData = "";
+        var element = utilities.getTopSchoolsBox();
+        
+        //add header to field
+        element.innerHTML = "<h3>Top Schools</h3>";
+        var filterType = form.getSelectedFilter();
+        // Storable[i] looks like:
+        // [CeebCode, ArrayPointer]      0               1          2
+        //            ArrayPointer ->[#applied,High School name, ceeb]
+        for (var i =0; i < 10; i++) {
+            if (sortable[i] === undefined)
+                break;
+            var newPar =document.createElement("p");
+            var ceebParam = sortable[i][0];
+            newPar.innerHTML = "<a href = #>" + (i+1) + ". " +  sortable[i][1][1] + "</a>:<br>" + sortable[i][1][0] + " students.<br>";
+            newPar.id = ceebParam;
+            element.appendChild(newPar);
+            
+            //when the user clicks on a school, simulate search by CEEB
+            newPar.onclick = function(){
+                console.log("CLICKED " + this.id);
+                var origSearchTerm = form.getSearchTerm();
+                var origSearchType = form.getSearchType();
+                
+                form.setSearchType("Code");
+                form.setSearchTerm(this.id);
+                
+                document.getElementById('lookupButton').click();
+            };
+        }
+    }
     // Any functions defined in this return statement are considered public
     // functions by RequireJS, and accessible through the namespace that
     // is attached to this module when loaded in other files.
