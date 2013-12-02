@@ -1,101 +1,114 @@
-html {
-	height: 100%
-}
-body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	clear: both;
-	font-family: "Bryant", "Gill Sans", sans-serif;
-}
-h1 {
-	text-align: left;
-	font-size: 12pt;
-	text-decoration: none;
-	font-weight: normal;
-	margin-bottom: 0.1em;
-}
-a {
-	color: blue;
-}
-p {
-	margin-top: 0.1em;
-	font-size: 10pt;
-}
-svg {
-	background-color: #FFC;
-}
-select {
-	width: 100px;
-}
-.filterPanel {
-	width: 150px;
-	height: 50px;
-	margin: 1px;
-	float: left;
-}
-.stacked {
-	padding: 2px;
-}
-.side_by_side {
-	display: inline-block;
-	vertical-align: top;
+html, body, .container, #contig_us_map_canvas.col-md-6 {
+    height: 100%;
 }
 
-.range{
+body {
+    background: #DCDCFC;
+}
+
+.col-md-6 {
+    height:100%;
+}
+
+.range {
    width: 40px;
+   height: 100%;
    margin: 0 5px ;
    display:inline-block;
 }
 
-#filter {
-   display: inline-block;
+input.range {
+    height: 28px;
 }
-#left_menu_bar {
-	width: 280px;
-	height: 600px;
-	background: #d6dee9
+
+.input-large {
+	width:240px;
 }
+
+#left_side_bar, #right_col, #contig_us_map_canvas {
+    border: 2px solid;
+}
+
+a {
+    color: #DB53DB;
+}
+
+h2 {
+	margin-left: 15px;
+}
+
+h3 {
+    color: #170660;
+	margin-left: 10px;
+}
+
+#map_row {
+    height: 90%;
+}
+
+#left_col {
+    height: 100%;
+}
+
+#left_side_bar {
+    line-height: 200%;
+    height: 100%;
+}
+
+#map_col {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+#right_col {
+    height:100%;
+}
+
+#top_schools {
+    height: 65%;
+    line-height: 100%;
+}
+
 #contig_us_map_canvas {
-	width: 500px;
-	height: 450px;
-}
-#wrap {
-	height: 100%;
-	width: 1200px;
-	margin: 0 auto
-}
-#top {
-	margin-top: 20px;
-	width: 800px;
-	height: 20px;
-}
-#contig_us_map_canvas {
-	width: 500px;
-	height: 450px;
-}
-#top_schools{
-   width: 280px;
-	height: 600px;
-	background: #d6dee9
-}
-#display_box{
-   width: 500px;
-   height: 145px;
-   background: #d6dee9;
-   margin-top: 5px;
-
+    height: 100%;
+    left-padding: 0;
 }
 
-#filter_section {
-	margin: 150px 0;
+#info_box {
+    height: 35%;
 }
 
-#panels {
-	margin-top: 10px;
+#filterDescription {
+    line-height: 100%;
+    font-size: 10pt;
+	margin-left: 10px;
 }
 
-#SAT_group{
-   margin-left: 15px;
+#errormessage {
+    color: red;
 }
 
+#search_term {
+    height: 28px;
+	margin-left:10px;
+}
+
+#search_type {
+	margin-left: 10px;
+}
+
+#search_years {
+	margin-left: 10px;
+}
+
+#filter_table {
+	margin-left: 10px;
+}
+
+#lookupButton {
+	margin-left: 10px;
+}
+
+#lower_filters {
+	margin-left: 10px;
+}

@@ -120,7 +120,7 @@ define([], function(){
     */
     var getInfoBoxElement = function() {
 
-        return document.getElementById("right_display");
+        return document.getElementById("info_box");
     };
 	
 	/**
@@ -132,7 +132,6 @@ define([], function(){
     * @return The handle of the html element.
     */
     var getTopSchoolsBox = function() {
-
         return document.getElementById("top_schools");
     };
 	
