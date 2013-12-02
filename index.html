@@ -43,13 +43,13 @@
                         <table id="filter_table">
                             <tr>
                                 <td>
-                                    <input type="radio" name="filter" value="none" checked>
+                                    <input type="radio" id="no_filter" name="filter" value="none" checked>
                                     None
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" name="filter" value="gpa">
+                                    <input type="radio" id="gpa_filter" name="filter" value="gpa">
                                     GPA
                                 </td>
                                 <td>
@@ -60,7 +60,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" name="filter" value="gender">
+                                    <input type="radio" id="gender_filter" name="filter" value="gender">
                                     Gender
                                 </td>
                                 <td>
@@ -72,14 +72,13 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" name="filter" value="major">
+                                    <input type="radio" id="major_filter" name="filter" value="major">
                                     Major
                                 </td>
                                 <td>
                                     <select id="major_select" name="major_select" style="width: 150px">
                                         <option value="Chemistry">Chemistry</option>
                                         <option value="Chemistry: ACS">Chemistry: ACS</option>
-                                        <option value="Chemistry: Biochemistry">Chemistry: Biochemistry</option>
                                         <option value="Chemistry: Biochemistry">Chemistry: Biochemistry</option>
                                         <option value="DNP Doctor of Nursing Practice">DNP Doctor of Nursing Practice</option>
                                         <option value="Drama">Drama</option>
@@ -93,7 +92,6 @@
                                         <option value="Nursing">Nursing</option>
                                         <option value="Philosophy">Philosophy</option>
                                         <option value="Physics">Physics</option>
-                                        <option value="Political Science">Political Science</option>
                                         <option value="Political Science">Political Science</option>
                                         <option value="Social Work">Social Work</option>
                                         <option value="Sociology">Sociology</option>
@@ -109,7 +107,7 @@
                             <CAPTION><EM>SAT Scores:</EM></CAPTION>
                             <tr>
                                 <td>
-                                    <input type="radio" name="filter" value="verbal">
+                                    <input type="radio" id="satv_filter" name="filter" value="verbal">
                                     Verbal
                                 </td>
                                 <td>
@@ -120,7 +118,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" name="filter" value="math">
+                                    <input type="radio" id="satm_filter" name="filter" value="math">
                                     Math
                                 </td>
                                 <td>
