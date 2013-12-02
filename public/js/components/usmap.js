@@ -212,8 +212,11 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
     *  @return void
     */
 	var changeDefaultText = function() {
+		//get the search type from the form
 		var searchType = form.getSearchType();
+		//get the textbox element from the html
 		var textBox = document.getElementById('search_term');
+		
 		switch(searchType) {
             case admissions.ZIP:
 				textBox.placeholder = "5 digit Zip. e.g 97103";
@@ -225,7 +228,7 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
 				textBox.placeholder = "HS,STATE. e.g Central Catholic, OR";
 				break;
             case admissions.STATE:
-				textBox.placeholder = "State Abbrev. e.g 'OR'";
+				textBox.placeholder = "State Abbrev. e.g OR";
 				break;
             case admissions.CITY:
 				textBox.placeholder = "City. e.g Portland";
