@@ -50,9 +50,6 @@ define(['./utilities', './admissions', './layers', './calculate', './form'], fun
             return;
         }
 
-        // Clear any error message.
-        utilities.getErrorMsgElement().innerHTML = "";
-
         // Create a url for
         // a subsequent GET request to a Google server.
         var terms = sTerm.split(',');
